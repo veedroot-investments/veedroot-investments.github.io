@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
     :root {
       --orange: #FF6B00;
       --orange-glow: rgba(255, 107, 0, 0.15);
@@ -23,9 +23,9 @@
       --border: rgba(255, 255, 255, 0.07);
       --radius: 14px;
     }
- 
+
     html { scroll-behavior: smooth; }
- 
+
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--bg);
@@ -34,7 +34,7 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
- 
+
     body::after {
       content: '';
       position: fixed;
@@ -45,7 +45,7 @@
       background-size: 128px 128px;
       z-index: 9999;
     }
- 
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -58,7 +58,7 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-6px); }
     }
- 
+
     /* ── Hero ── */
     .hero {
       position: relative;
@@ -90,9 +90,9 @@
       bottom: 15%; right: 10%;
       pointer-events: none;
     }
- 
+
     .hero-content { position: relative; z-index: 1; max-width: 640px; }
- 
+
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--bg3); border: 1px solid var(--border);
@@ -106,7 +106,7 @@
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--green); animation: pulse 2s ease-in-out infinite;
     }
- 
+
     .logo {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: clamp(3.5rem, 10vw, 5.5rem);
@@ -117,7 +117,7 @@
     }
     .logo .heavy { color: var(--orange); }
     .logo .log { color: var(--text); }
- 
+
     .tagline {
       font-size: clamp(1rem, 3vw, 1.25rem);
       color: var(--text-dim); font-weight: 400;
@@ -125,14 +125,14 @@
       animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
       animation-delay: 0.35s;
     }
- 
+
     .hero-desc {
       font-size: 1rem; color: var(--text-dim); line-height: 1.7;
       max-width: 480px; margin: 0 auto 2.5rem;
       animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
       animation-delay: 0.45s;
     }
- 
+
     /* Phone mockup */
     .phone-wrap {
       margin: 2rem auto 3rem;
@@ -148,7 +148,7 @@
       animation: float 5s ease-in-out infinite;
     }
     .phone-frame img { display: block; width: 100%; height: auto; }
- 
+
     /* Play Store button */
     .store-btn {
       display: inline-flex; align-items: center; gap: 10px;
@@ -170,7 +170,7 @@
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 16px; font-weight: 700; letter-spacing: 0.5px;
     }
- 
+
     /* ── Cards ── */
     .cards-section { position: relative; z-index: 1; padding: 0 1.5rem 4rem; }
     .cards-grid {
@@ -178,7 +178,7 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.2rem; max-width: 720px; margin: 0 auto;
     }
- 
+
     .card {
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 2rem 1.8rem;
@@ -190,7 +190,7 @@
     .card:nth-child(1) { animation-delay: 0.6s; }
     .card:nth-child(2) { animation-delay: 0.7s; }
     .card:nth-child(3) { animation-delay: 0.8s; }
- 
+
     .card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0;
       height: 3px; background: linear-gradient(90deg, var(--orange), #FF9A00);
@@ -202,7 +202,7 @@
       box-shadow: 0 12px 40px rgba(255,107,0,0.08);
     }
     .card:hover::before { opacity: 1; }
- 
+
     .card-icon {
       width: 48px; height: 48px; border-radius: 12px;
       background: var(--bg3); display: flex;
@@ -211,7 +211,7 @@
       transition: background 0.35s;
     }
     .card:hover .card-icon { background: var(--orange-glow); }
- 
+
     .card-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 1.25rem; font-weight: 700;
@@ -230,7 +230,7 @@
       align-items: center; gap: 6px; transition: gap 0.3s;
     }
     .card:hover .card-link { gap: 10px; }
- 
+
     /* ── Features ── */
     .features {
       max-width: 720px; margin: 0 auto 3rem; padding: 0 1.5rem;
@@ -250,7 +250,7 @@
       letter-spacing: 1px; text-transform: uppercase;
       color: var(--text-dim);
     }
- 
+
     /* ── Disclaimer ── */
     .disclaimer {
       max-width: 720px; margin: 0 auto 3rem; padding: 0 1.5rem;
@@ -272,7 +272,7 @@
     .disclaimer-text {
       font-size: 0.82rem; color: var(--text-dim); line-height: 1.7;
     }
- 
+
     /* ── Footer ── */
     .footer {
       text-align: center; padding: 2rem 1.5rem 3rem;
@@ -294,7 +294,7 @@
       text-decoration: none; transition: color 0.2s;
     }
     .footer-links a:hover { color: var(--orange); }
- 
+
     @media (max-width: 600px) {
       .hero { padding: 2rem 1.2rem; }
       .features { grid-template-columns: 1fr; }
@@ -304,32 +304,32 @@
   </style>
 </head>
 <body>
- 
+
   <section class="hero">
     <div class="hero-content">
- 
+
       <div class="badge">
         <div class="badge-dot"></div>
         Available on Google Play
       </div>
- 
+
       <div class="logo">
         <span class="heavy">Heavy</span><span class="log">Log</span>
       </div>
       <div class="tagline">Driver Work Logbook</div>
- 
+
       <p class="hero-desc">
         A personal fatigue management reference tool for Australian heavy vehicle drivers.
         Track your work and rest activities against NHVR Standard Hours and BFM guidelines &mdash;
         entirely offline, entirely on your device.
       </p>
- 
+
       <div class="phone-wrap">
         <div class="phone-frame">
           <img src="images/01_dashboard.png" alt="HeavyLog dashboard screenshot">
         </div>
       </div>
- 
+
       <a href="#" class="store-btn">
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734c0-.39.228-.734.609-.92z" fill="#4285F4"/>
@@ -342,13 +342,13 @@
           <div class="big">Google Play</div>
         </div>
       </a>
- 
+
     </div>
   </section>
- 
+
   <section class="cards-section">
     <div class="cards-grid">
- 
+
       <a href="manual.html" class="card">
         <div class="card-icon">&#128214;</div>
         <div class="card-title">User Manual</div>
@@ -357,7 +357,7 @@
         </div>
         <div class="card-link">Read the manual <span>&rarr;</span></div>
       </a>
- 
+
       <a href="heavylog-privacy.html" class="card">
         <div class="card-icon">&#128274;</div>
         <div class="card-title">Privacy Policy</div>
@@ -366,8 +366,8 @@
         </div>
         <div class="card-link">Read the policy <span>&rarr;</span></div>
       </a>
- 
-      <a href="mailto:?subject=HeavyLog%20Feedback" class="card">
+
+      <a href="/cdn-cgi/l/email-protection#bc83cfc9ded6d9dfc881f4d9ddcac5f0d3db998e8cfad9d9d8dedddfd7" class="card">
         <div class="card-icon">&#128172;</div>
         <div class="card-title">Support &amp; Feedback</div>
         <div class="card-desc">
@@ -375,10 +375,10 @@
         </div>
         <div class="card-link">Get in touch <span>&rarr;</span></div>
       </a>
- 
+
     </div>
   </section>
- 
+
   <div class="features">
     <div class="feature">
       <div class="feature-icon">&#128274;</div>
@@ -393,7 +393,7 @@
       <div class="feature-label">Real-Time Alerts</div>
     </div>
   </div>
- 
+
   <div class="disclaimer">
     <div class="disclaimer-box">
       <div class="disclaimer-title">&#9888;&#65039; Important Disclaimer</div>
@@ -402,15 +402,10 @@
       </div>
     </div>
   </div>
- 
+
   <footer class="footer">
     <div class="footer-brand"><span class="heavy">Heavy</span>Log</div>
     <div class="footer-sub">Personal Driver Reference Tool &nbsp;&bull;&nbsp; March 2026</div>
     <div class="footer-links">
       <a href="manual.html">User Manual</a>
-      <a href="heavylog-privacy.html">Privacy Policy</a>
-    </div>
-  </footer>
- 
-</body>
-</html>
+      <a href="heavylog-privacy.html">Privacy 
