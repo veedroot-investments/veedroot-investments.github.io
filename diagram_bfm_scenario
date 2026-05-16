@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>BFM walkthrough — Jogi's scenario</title>
+<style>
+  :root {
+    --bg: #0D0F12;
+    --bg2: #151820;
+    --bg3: #1E2230;
+    --text: #F0F2F8;
+    --text-dim: #B8BED0;
+    --green: #2ECC71;
+    --blue: #3498DB;
+    --red: #E74C3C;
+    --orange: rgb(255, 107, 13);
+    --yellow: #F1C40F;
+    --border: rgba(255,255,255,0.07);
+    --purple: #9B59B6;
+    --cyan: #1ABC9C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px 12px 60px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 13px;
+    max-width: 1180px;
+    margin-inline: auto;
+  }
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px 0;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 12px;
+    margin: 0 0 14px 0;
+  }
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    margin: 14px 0 6px 0;
+    color: var(--orange);
+    text-transform: uppercase;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    padding: 8px 11px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i {
+    display: inline-block;
+    width: 14px;
+    height: 11px;
+    border-radius: 2px;
+  }
+
+  /* Outer timeline panel */
+  .day-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 12px 16px;
+    margin-bottom: 14px;
+  }
+  .day-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  /* Hours axis (24h) */
+  .hours-axis {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    border-bottom: 1px solid var(--border);
+    height: 18px;
+    font-size: 9px;
+    color: var(--text-dim);
+    align-items: flex-end;
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+  }
+  .hours-axis > div {
+    border-left: 1px solid rgba(255,255,255,0.07);
+    padding-left: 2px;
+    line-height: 1;
+  }
+  .hours-axis > div:first-child { border-left: 0; }
+
+  /* Activity bar */
+  .activity-bar {
+    display: flex;
+    height: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    margin-bottom: 8px;
+  }
+  .activity-bar > div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .seg-drive { background: var(--blue); }
+  .seg-break { background: var(--green); opacity: 0.85; }
+  .seg-rest  { background: var(--green); }
+  .seg-major { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+  /* Window rows */
+  .windows-grid {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: 3px;
+    margin-top: 6px;
+  }
+  .win-row {
+    position: relative;
+    height: 20px;
+  }
+  .win-row-label {
+    display: inline-block;
+    position: absolute;
+    left: -2px;
+    top: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    width: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .win-row-track {
+    margin-left: 32px;
+    position: relative;
+    height: 100%;
+  }
+  .win-block {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border: 1.5px dashed;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .win-625 { border-color: var(--purple); color: var(--purple); background: rgba(155,89,182,0.07); }
+  .win-9   { border-color: var(--yellow); color: var(--yellow); background: rgba(241,196,15,0.06); }
+  .win-12  { border-color: var(--orange); color: var(--orange); background: rgba(255,107,13,0.05); }
+  .win-24  { border-color: var(--cyan); color: var(--cyan); background: rgba(26,188,156,0.05); }
+
+  /* Anchor markers */
+  .anchor {
+    position: absolute;
+    width: 2px;
+    background: var(--green);
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+  .anchor-lbl {
+    position: absolute;
+    top: -16px;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--green);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: var(--bg2);
+    padding: 0 4px;
+  }
+
+  /* At-cap badge */
+  .badge-cap {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--red);
+    background: rgba(231,76,60,0.15);
+    padding: 1px 4px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Notes box */
+  .notes {
+    margin-top: 16px;
+    background: rgba(255,107,13,0.06);
+    border: 1px solid rgba(255,107,13,0.2);
+    border-radius: 8px;
+    padding: 11px 13px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+  .notes strong { color: var(--orange); }
+  .notes ul { margin: 4px 0 0 16px; padding: 0; }
+  .notes li { margin-bottom: 3px; }
+
+  .small-note {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin: 5px 0;
+    font-style: italic;
+  }
+
+  table.summary {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-top: 10px;
+  }
+  .summary th, .summary td {
+    text-align: left;
+    padding: 5px 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary th {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+  .summary td.win { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; color: var(--orange); }
+  .summary td.cap { color: var(--red); font-weight: 700; }
+  .summary td.ok  { color: var(--green); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<h1>BFM walkthrough — driver's actual scenario</h1>
+<p class="subtitle">Each major rest end opens a new set of forward windows. Watch how multiple BFM windows ride along the same activity bar.</p>
+
+<div class="legend">
+  <span><i style="background:var(--blue)"></i>Drive</span>
+  <span><i style="background:var(--green); opacity:0.85"></i>Break (<24h)</span>
+  <span><i style="background:linear-gradient(90deg,var(--green),var(--cyan))"></i>Major rest (≥7h)</span>
+  <span><i style="border:1.5px dashed var(--purple); background:rgba(155,89,182,0.07)"></i>6¼h window</span>
+  <span><i style="border:1.5px dashed var(--yellow); background:rgba(241,196,15,0.06)"></i>9h window</span>
+  <span><i style="border:1.5px dashed var(--orange); background:rgba(255,107,13,0.05)"></i>12h window</span>
+  <span><i style="border:1.5px dashed var(--cyan); background:rgba(26,188,156,0.05)"></i>24h window</span>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     DAY 1 — 9/05  (only the evening shows here)
+     Window: 7pm 9/05 → 7pm 10/05 (24 hours)
+     ════════════════════════════════════════════════════════ -->
+<h2>9/05 7pm – 10/05 7pm</h2>
+
+<div class="day-panel">
+  <div class="day-label">7pm — major rest ends · driver starts evening shift</div>
+
+  <!-- Hours axis 7pm → 7pm: 24 hours -->
+  <div class="hours-axis">
+    <div>7p</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12a</div>
+    <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+    <div>7a</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12p</div>
+    <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+  </div>
+
+  <!-- Activity bar: 9/05 7pm → 10/05 7pm -->
+  <!-- 7pm-7:30pm drive (0.5h = 2.083%), 7:30pm-12am break (4.5h = 18.75%), 12am-6am drive (6h = 25%), 6-6:15am break (0.25h = 1.042%), 6:15-8:30am drive (2.25h = 9.375%), 8:30am-3:30pm rest (7h = 29.17%), 3:30-7pm drive partial (3.5h = 14.58%) -->
+  <div class="activity-bar">
+    <div class="seg-drive" style="width:2.083%">D</div>
+    <div class="seg-break" style="width:18.75%">break 4h 30m</div>
+    <div class="seg-drive" style="width:25%">DRIVE 6h ⚠</div>
+    <div class="seg-break" style="width:1.042%">B</div>
+    <div class="seg-drive" style="width:9.375%">2h 15m</div>
+    <div class="seg-major" style="width:29.17%">MAJOR REST 7h</div>
+    <div class="seg-drive" style="width:14.58%">DRIVE 3h 30m</div>
+  </div>
+
+  <!-- Windows grid -->
+  <div class="windows-grid">
+
+    <!-- 6¼h windows -->
+    <div class="win-row">
+      <span class="win-row-label">6¼h</span>
+      <div class="win-row-track">
+        <!-- 6¼h from 9/05 7pm: 0% width 6.25/24 = 26.04% -->
+        <div class="win-block win-625" style="left:0; width:26.04%">work 2h ✓</div>
+        <!-- 6¼h from 10/05 12am: position = 5/24 = 20.83%, width 26.04% -->
+        <div class="win-block win-625" style="left:20.83%; width:26.04%; background:rgba(155,89,182,0.16);">work 6h
+          <span class="badge-cap">AT CAP</span>
+        </div>
+        <!-- 6¼h from 10/05 6:15am: position = 11.25/24 = 46.875%, width 26.04% -->
+        <div class="win-block win-625" style="left:46.875%; width:26.04%">work 2h 15m ✓</div>
+        <!-- 6¼h from 10/05 3:30pm: position = 20.5/24 = 85.42%, ends 9:45pm (4¼ past 7pm goes past chart) -->
+        <div class="win-block win-625" style="left:85.42%; width:14.58%; opacity:0.6">opens →</div>
+      </div>
+    </div>
+
+    <!-- 9h windows -->
+    <div class="win-row">
+      <span class="win-row-label">9h</span>
+      <div class="win-row-track">
+        <!-- 9h from 7pm: width 9/24 = 37.5% -->
+        <div class="win-block win-9" style="left:0; width:37.5%">work 4h 30m ✓</div>
+        <!-- 9h from 10/05 12am: position 20.83%, width 37.5% -->
+        <div class="win-block win-9" style="left:20.83%; width:37.5%; background:rgba(241,196,15,0.12);">work 8h 15m  · 15m short of cap</div>
+        <!-- 9h from 10/05 6:15am: position 46.875%, width 37.5% (ends 3:15pm = 20.25h = 84.375%) -->
+        <div class="win-block win-9" style="left:46.875%; width:37.5%">work 2h 15m ✓</div>
+        <!-- 9h from 3:30pm: position 85.42%, ends 12:30am (29.5h overflows chart) -->
+        <div class="win-block win-9" style="left:85.42%; width:14.58%; opacity:0.6">opens →</div>
+      </div>
+    </div>
+
+    <!-- 12h windows -->
+    <div class="win-row">
+      <span class="win-row-label">12h</span>
+      <div class="win-row-track">
+        <!-- 12h from 7pm: width 12/24 = 50% -->
+        <div class="win-block win-12" style="left:0; width:50%">work 7h 15m ✓</div>
+        <!-- 12h from 12am: position 20.83%, width 50% (ends 12pm = 17h = 70.83%) -->
+        <div class="win-block win-12" style="left:20.83%; width:50%">work 8h 15m ✓</div>
+        <!-- 12h from 6:15am: position 46.875%, width 50% -->
+        <div class="win-block win-12" style="left:46.875%; width:50%">work 6h 15m ✓</div>
+        <!-- 12h from 3:30pm: position 85.42%, ends 3:30am (32.5h overflows) -->
+        <div class="win-block win-12" style="left:85.42%; width:14.58%; opacity:0.6">opens →</div>
+      </div>
+    </div>
+
+    <!-- 24h windows -->
+    <div class="win-row">
+      <span class="win-row-label">24h</span>
+      <div class="win-row-track">
+        <!-- 24h from 7pm: full width 100% -->
+        <div class="win-block win-24" style="left:0; width:100%">work 12h 15m / 14h cap · 7h cont rest ✓</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <strong>What's happening here:</strong>
+    <ul>
+      <li><strong>10/05 12am 6¼h window</strong> — driver drove 12am–6am with no break. Inside the 6¼h window: <strong>6h work, 15m rest</strong>. Cap is 6h work, min is 15m. <span style="color:var(--red)">Right at the cap, zero margin</span>. One more minute of driving would have breached.</li>
+      <li><strong>10/05 12am 9h window</strong> — by 8am, work = 7h 45m. Then 8:30am major rest pushes the window into clean territory. By 9am closure: 8h 15m work + 45m rest. Cap 8h 30m. Within limits — 15 min margin.</li>
+      <li><strong>10/05 6:15am window</strong> — opens lightly loaded because the 8:30am major rest absorbs most of it.</li>
+      <li><strong>3:30pm windows</strong> — open at the end of the second 7h major rest. The bigger story of these continues on the next chart.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     DAY 2 — 10/05 3:30pm → 11/05 3:30pm
+     ════════════════════════════════════════════════════════ -->
+<h2>10/05 3:30pm – 11/05 3:30pm</h2>
+
+<div class="day-panel">
+  <div class="day-label">3:30pm — second major rest ends · evening shift begins</div>
+
+  <!-- Hours axis 3:30pm → 3:30pm next day -->
+  <div class="hours-axis">
+    <div>3:30p</div><div>4:30</div><div>5:30</div><div>6:30</div><div>7:30</div><div>8:30</div>
+    <div>9:30</div><div>10:30</div><div>11:30</div><div>12:30a</div><div>1:30</div><div>2:30</div>
+    <div>3:30</div><div>4:30</div><div>5:30</div><div>6:30</div><div>7:30</div><div>8:30</div>
+    <div>9:30a</div><div>10:30</div><div>11:30</div><div>12:30p</div><div>1:30</div><div>2:30</div>
+  </div>
+
+  <!-- Activity: 3:30pm-9:30pm drive (6h), 9:30-9:45pm break (15m), 9:45pm-12am drive (2h 15m), 12-12:45am break (45m), 12:45-4:45am drive (4h), 4:45-7am break (2h 15m), 7-7:15am drive (15m), 7:15-8am break (45m), 8-8:30am drive (30m), 8:30am-3:30pm major rest (7h) -->
+  <div class="activity-bar">
+    <div class="seg-drive" style="width:25%">DRIVE 6h ⚠</div>
+    <div class="seg-break" style="width:1.042%">B</div>
+    <div class="seg-drive" style="width:9.375%">2h 15m</div>
+    <div class="seg-break" style="width:3.125%">45m</div>
+    <div class="seg-drive" style="width:16.67%">DRIVE 4h</div>
+    <div class="seg-break" style="width:9.375%">break 2h 15m</div>
+    <div class="seg-drive" style="width:1.042%">D</div>
+    <div class="seg-break" style="width:3.125%">45m</div>
+    <div class="seg-drive" style="width:2.083%">30m</div>
+    <div class="seg-major" style="width:29.17%">MAJOR REST 7h</div>
+  </div>
+
+  <!-- Windows -->
+  <div class="windows-grid">
+
+    <!-- 6¼h windows -->
+    <div class="win-row">
+      <span class="win-row-label">6¼h</span>
+      <div class="win-row-track">
+        <!-- 6¼h from 3:30pm: 0%, width 6.25/24 = 26.04% -->
+        <div class="win-block win-625" style="left:0; width:26.04%; background:rgba(155,89,182,0.16);">work 6h
+          <span class="badge-cap">AT CAP</span>
+        </div>
+        <!-- 6¼h from 9:45pm: position 6.25/24 = 26.04%, width 26.04% -->
+        <div class="win-block win-625" style="left:26.04%; width:26.04%">work 4h 45m ✓</div>
+        <!-- 6¼h from 12:45am: position 9.25/24 = 38.54%, width 26.04% -->
+        <div class="win-block win-625" style="left:38.54%; width:26.04%">work 4h ✓</div>
+        <!-- 6¼h from 7am: position 15.5/24 = 64.58%, width 26.04% -->
+        <div class="win-block win-625" style="left:64.58%; width:26.04%">work 45m ✓</div>
+        <!-- 6¼h from 8am: position 16.5/24 = 68.75%, width 26.04% -->
+        <div class="win-block win-625" style="left:68.75%; width:26.04%; background:rgba(155,89,182,0.04); opacity:0.6">work 30m ✓</div>
+      </div>
+    </div>
+
+    <!-- 9h -->
+    <div class="win-row">
+      <span class="win-row-label">9h</span>
+      <div class="win-row-track">
+        <!-- 9h from 3:30pm: 0%, width 9/24 = 37.5% (ends 12:30am) -->
+        <div class="win-block win-9" style="left:0; width:37.5%; background:rgba(241,196,15,0.12);">work 8h 15m · 15m short of cap</div>
+        <!-- 9h from 9:45pm: position 26.04%, width 37.5% (ends 6:45am) -->
+        <div class="win-block win-9" style="left:26.04%; width:37.5%">work 6h 45m ✓</div>
+        <!-- 9h from 12:45am: position 38.54%, width 37.5% (ends 9:45am) -->
+        <div class="win-block win-9" style="left:38.54%; width:37.5%">work 4h 45m ✓</div>
+        <!-- 9h from 7am: position 64.58%, width 37.5% (ends 4pm next day = past window) -->
+        <div class="win-block win-9" style="left:64.58%; width:35.42%">work 1h 15m ✓</div>
+      </div>
+    </div>
+
+    <!-- 12h -->
+    <div class="win-row">
+      <span class="win-row-label">12h</span>
+      <div class="win-row-track">
+        <!-- 12h from 3:30pm: 0%, width 12/24 = 50% (ends 3:30am) -->
+        <div class="win-block win-12" style="left:0; width:50%; background:rgba(255,107,13,0.12);">work 11h
+          <span class="badge-cap">AT CAP</span>
+        </div>
+        <!-- 12h from 9:45pm: position 26.04%, width 50% (ends 9:45am) -->
+        <div class="win-block win-12" style="left:26.04%; width:50%">work 7h 30m ✓</div>
+        <!-- 12h from 12:45am: position 38.54%, width 50% (ends 12:45pm) -->
+        <div class="win-block win-12" style="left:38.54%; width:50%">work 5h 30m ✓</div>
+      </div>
+    </div>
+
+    <!-- 24h -->
+    <div class="win-row">
+      <span class="win-row-label">24h</span>
+      <div class="win-row-track">
+        <div class="win-block win-24" style="left:0; width:100%">work 13h / 14h cap · 7h cont rest ✓</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <strong>The "at-cap" pattern, twice in one day:</strong>
+    <ul>
+      <li><strong>3:30pm 6¼h window</strong> — same 6h-drive-no-break pattern as the early morning. Once again, exactly at the 6h cap.</li>
+      <li><strong>3:30pm 12h window</strong> — by 3:30am, this window contains: 6h drive + 15m break + 2h 15m drive + 45m break + 2h 45m drive = <strong>11h work</strong>, against an 11h cap. <span style="color:var(--red)">At cap, zero margin.</span></li>
+      <li><strong>3:30pm 9h window</strong> — closes at 12:30am with 8h 15m work · 15m margin under cap.</li>
+      <li><strong>From 12:45am onward</strong>, the driver's pattern shifts to shorter drives + longer breaks. Every subsequent window opens comfortably under cap.</li>
+      <li><strong>24h window</strong> — 13h work · 14h cap · the second major rest provides the required 7h continuous stationary rest cleanly.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     Summary table
+     ════════════════════════════════════════════════════════ -->
+<h2>Summary</h2>
+
+<div class="day-panel">
+  <table class="summary">
+    <thead>
+      <tr>
+        <th>Window opened at</th>
+        <th>Type</th>
+        <th>Work</th>
+        <th>Rest</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>9/05 7pm</td><td>6¼h</td><td>2h</td><td>4h 30m+</td><td class="ok">✓</td></tr>
+      <tr><td>9/05 7pm</td><td>9h</td><td>4h 30m</td><td>4h 30m</td><td class="ok">✓</td></tr>
+      <tr><td>9/05 7pm</td><td>12h</td><td>7h 15m</td><td>4h 45m</td><td class="ok">✓</td></tr>
+      <tr><td>9/05 7pm</td><td>24h</td><td>12h 15m / 14h</td><td>7h cont (R1)</td><td class="ok">✓</td></tr>
+      <tr style="background:rgba(231,76,60,0.06)">
+        <td>10/05 12am</td><td>6¼h</td><td>6h</td><td>15m</td><td class="cap">AT CAP</td>
+      </tr>
+      <tr><td>10/05 12am</td><td>9h</td><td>8h 15m</td><td>45m</td><td class="ok">✓ (15m margin)</td></tr>
+      <tr><td>10/05 12am</td><td>12h</td><td>8h 15m</td><td>3h 45m</td><td class="ok">✓</td></tr>
+      <tr style="background:rgba(231,76,60,0.06)">
+        <td>10/05 3:30pm</td><td>6¼h</td><td>6h</td><td>15m</td><td class="cap">AT CAP</td>
+      </tr>
+      <tr><td>10/05 3:30pm</td><td>9h</td><td>8h 15m</td><td>45m</td><td class="ok">✓ (15m margin)</td></tr>
+      <tr style="background:rgba(231,76,60,0.06)">
+        <td>10/05 3:30pm</td><td>12h</td><td>11h</td><td>1h</td><td class="cap">AT CAP</td>
+      </tr>
+      <tr><td>10/05 3:30pm</td><td>24h</td><td>13h / 14h</td><td>7h cont (R2)</td><td class="ok">✓</td></tr>
+      <tr><td>11
