@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeavyLog — Privacy Policy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #FAFAF8;
+      --surface: #FFFFFF;
+      --text: #1A1A1A;
+      --text-secondary: #5A5A58;
+      --accent: #2C5F2D;
+      --accent-light: #E8F0E8;
+      --accent-dark: #1E4220;
+      --warn: #B33A2B;
+      --warn-bg: #FEF2F0;
+      --warn-border: #E8C4BF;
+      --border: #E4E2DD;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--accent-dark);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(44,95,45,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(30,66,32,0.4) 0%, transparent 50%);
+    }
+    .header-content { position: relative; z-index: 1; }
+    .header .app-name {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.15rem;
+    }
+    .header .app-tagline {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      opacity: 0.95;
+    }
+    .header .effective {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    /* ── Main ── */
+    .container {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-left: 4px solid var(--warn);
+      border-radius: 8px;
+      padding: 1.4rem 1.5rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .disclaimer-title {
+      font-weight: 700;
+      color: var(--warn);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .disclaimer p {
+      font-size: 0.92rem;
+      color: #4A2A22;
+      line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+    .disclaimer p:last-child { margin-bottom: 0; }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+      padding: 0;
+    }
+    .toc li {
+      counter-increment: toc;
+      margin-bottom: 0.3rem;
+    }
+    .toc li::before {
+      content: counter(toc) ".";
+      display: inline-block;
+      width: 1.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.15s;
+    }
+    .toc a:hover { color: var(--accent); }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 2.2rem; }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--accent-dark);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--accent-light);
+    }
+    .section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 1.2rem 0 0.5rem;
+    }
+    .section p {
+      margin-bottom: 0.8rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .section ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 0.8rem;
+    }
+    .section ul li {
+      position: relative;
+      padding-left: 1.4rem;
+      margin-bottom: 0.45rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+    .section strong { color: var(--text); font-weight: 600; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .header { padding: 2rem 1.2rem 1.8rem; }
+      .header .app-name { font-size: 2rem; }
+      .header h1 { font-size: 1.3rem; }
+      .container { padding: 1.5rem 1.2rem 3rem; }
+      .section h2 { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-content">
+      <div class="app-name">HeavyLog</div>
+      <div class="app-tagline">Driver Work Logbook</div>
+      <h1>Privacy Policy</h1>
+      <p class="effective">Effective Date: 18 March 2026</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <div class="disclaimer-title">&#9888; Not an Official or Approved Logbook</div>
+      <p>HeavyLog is a personal reference tool only. <strong>This app does not represent any government entity.</strong> It is <strong>not</strong> approved, endorsed or recognised by the National Heavy Vehicle Regulator (NHVR), the Australian Government, any State or Territory transport authority, or any other government agency.</p>
+      <p>HeavyLog does not replace your legal obligation to maintain a compliant work diary or logbook as required under the Heavy Vehicle National Law (HVNL) and NHVR regulations.</p>
+      <p>Always consult the official NHVR work diary requirements and seek independent legal or compliance advice for your obligations under the HVNL.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <nav class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#information-we-collect">Information We Collect</a></li>
+        <li><a href="#how-we-use">How We Use Your Information</a></li>
+        <li><a href="#data-storage">Data Storage</a></li>
+        <li><a href="#location-data">Location Data</a></li>
+        <li><a href="#data-sharing">Data Sharing and Disclosure</a></li>
+        <li><a href="#third-party">Third-Party Services</a></li>
+        <li><a href="#children">Children&rsquo;s Privacy</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#your-rights">Your Rights</a></li>
+        <li><a href="#liability">Limitation of Liability</a></li>
+        <li><a href="#changes">Changes to This Policy</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Overview -->
+    <section class="section" id="overview">
+      <h2>1. Overview</h2>
+      <p>HeavyLog (&ldquo;the App&rdquo;) is a personal fatigue management reference tool for heavy vehicle drivers. It is designed for personal use only to help drivers informally track their work and rest activities against Australian NHVR fatigue guidelines.</p>
+      <p>This Privacy Policy explains how we collect, use, store and protect your information when you use HeavyLog.</p>
+      <p>We are committed to protecting your privacy. This policy is written in plain English so you understand exactly what happens with your data.</p>
+    </section>
+
+    <!-- 2. Information We Collect -->
+    <section class="section" id="information-we-collect">
+      <h2>2. Information We Collect</h2>
+      <h3>2.1 Information You Provide</h3>
+      <p>When you use HeavyLog, you may enter the following information:</p>
+      <ul>
+        <li>Driver name, licence number and employer or company name</li>
+        <li>Vehicle registration, fleet number and trailer number</li>
+        <li>Work activity logs including driving, other work, rest and breaks</li>
+        <li>Odometer readings</li>
+        <li>GPS location (only when you tap the locate button)</li>
+        <li>Notes attached to log entries</li>
+        <li>Home base timezone and fatigue scheme preference (Standard Hours or BFM)</li>
+      </ul>
+      <h3>2.2 Information Collected Automatically</h3>
+      <p>HeavyLog does not automatically collect any analytics, crash reports, advertising identifiers or usage data. The App does not connect to any server or third-party service during normal operation.</p>
+    </section>
+
+    <!-- 3. How We Use Your Information -->
+    <section class="section" id="how-we-use">
+      <h2>3. How We Use Your Information</h2>
+      <p>All information you enter is used solely to:</p>
+      <ul>
+        <li>Calculate and display your fatigue status as a personal reference against NHVR Standard Hours or BFM guidelines</li>
+        <li>Generate a personal activity log for your own records</li>
+        <li>Allow you to export your log as a CSV file</li>
+        <li>Display your home base timezone and driver profile within the App</li>
+      </ul>
+      <p>We do not use your information for advertising, profiling, marketing or any purpose other than operating the App on your device.</p>
+    </section>
+
+    <!-- 4. Data Storage -->
+    <section class="section" id="data-storage">
+      <h2>4. Data Storage</h2>
+      <p>All data entered into HeavyLog is stored locally on your device only:</p>
+      <ul>
+        <li>Log entries, driver profile and settings are stored in your device&rsquo;s local storage</li>
+        <li>No data is uploaded to any server, cloud service or third party</li>
+        <li>No account, login or registration is required to use the App</li>
+        <li>Exported CSV files are saved to your device&rsquo;s local storage or shared via your chosen method</li>
+      </ul>
+      <p><strong>Data retention:</strong> If you uninstall the App or clear app data, your log entries will be permanently deleted. We strongly recommend regularly exporting your log using the built-in Export function.</p>
+    </section>
+
+    <!-- 5. Location Data -->
+    <section class="section" id="location-data">
+      <h2>5. Location Data</h2>
+      <p>HeavyLog requests access to your device&rsquo;s GPS location only when you tap the location button in the activity entry screen. Location data is used solely to auto-fill the location field in your log entry.</p>
+      <ul>
+        <li>Location is only accessed when you explicitly request it by tapping the locate button</li>
+        <li>Location data is stored only as a text entry in your log &mdash; it is never transmitted anywhere</li>
+        <li>You can deny location permission and still use all other features of the App</li>
+        <li>No background location tracking occurs at any time</li>
+      </ul>
+    </section>
+
+    <!-- 6. Data Sharing -->
+    <section class="section" id="data-sharing">
+      <h2>6. Data Sharing and Disclosure</h2>
+      <p>We do not sell, trade, rent or share your personal information with any third party. Your data never leaves your device unless you choose to export it yourself.</p>
+      <p>We may be required to disclose information if compelled by law. However, as we do not store any of your data on our servers, we have no data to disclose.</p>
+    </section>
+
+    <!-- 7. Third-Party Services -->
+    <section class="section" id="third-party">
+      <h2>7. Third-Party Services</h2>
+      <p>HeavyLog does not integrate with, connect to or transmit data to any third-party services, advertising networks, analytics providers or social media platforms. The App operates entirely offline on your device.</p>
+    </section>
+
+    <!-- 8. Children's Privacy -->
+    <section class="section" id="children">
+      <h2>8. Children&rsquo;s Privacy</h2>
+      <p>HeavyLog is intended for use by adults holding a heavy vehicle licence. The App is not directed at children under the age of 18 (or the age of majority in your jurisdiction). We do not knowingly collect personal information from children.</p>
+    </section>
+
+    <!-- 9. Security -->
+    <section class="section" id="security">
+      <h2>9. Security</h2>
+      <p>Because all data is stored locally on your device, the security of your data depends on the security of your device. We recommend:</p>
+      <ul>
+        <li>Using a screen lock, PIN or biometric authentication on your device</li>
+        <li>Keeping your device&rsquo;s operating system up to date</li>
+        <li>Regularly exporting and backing up your log data</li>
+      </ul>
+    </section>
+
+    <!-- 10. Your Rights -->
+    <section class="section" id="your-rights">
+      <h2>10. Your Rights</h2>
+      <p>You have full control over your data at all times:</p>
+      <ul>
+        <li>You can view all your data within the App at any time</li>
+        <li>You can export your complete log as a CSV file</li>
+        <li>You can delete all your data using the <strong>&ldquo;Clear All Data&rdquo;</strong> button in the Profile tab</li>
+        <li>You can uninstall the App at any time, which removes all locally stored data</li>
+      </ul>
+      <p>As all data is stored locally on your device and we do not maintain any server-side records, there is no need to submit a data access or deletion request to us.</p>
+    </section>
+
+    <!-- 11. Limitation of Liability -->
+    <section class="section" id="liability">
+      <h2>11. Limitation of Liability</h2>
+      <p>HeavyLog is provided as a personal reference tool only, on an <strong>&ldquo;as is&rdquo;</strong> basis with no warranties of any kind. To the fullest extent permitted by law:</p>
+      <ul>
+        <li>We make no representation that HeavyLog is accurate, complete or up to date with current NHVR regulations</li>
+        <li>We accept no responsibility for any compliance breach, infringement, fine, penalty or legal consequence arising from use of or reliance on this App</li>
+        <li>The App is not a substitute for official NHVR-approved work diary systems or qualified legal and compliance advice</li>
+        <li>Users are solely responsible for ensuring their own compliance with all applicable laws and regulations</li>
+      </ul>
+    </section>
+
+    <!-- 12. Changes -->
+    <section class="section" id="changes">
+      <h2>12. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. Any changes will be reflected by an updated effective date at the top of this document. Continued use of the App after any changes constitutes your acceptance of the updated policy.</p>
+      <p>We encourage you to review this Privacy Policy periodically.</p>
+    </section>
+
+    <!-- 13. Contact -->
+    <section class="section" id="contact">
+      <h2>13. Contact Us</h2>
+      <p>If you have any questions about this Privacy Policy or how your data is handled, please email us at help.heavylog@outlook.com or contact us through the Google Play Store listing for HeavyLog.</p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    HeavyLog &mdash; Personal Driver Reference Tool &nbsp;|&nbsp; Privacy Policy &nbsp;|&nbsp; 18 March 2026
+  </footer>
+
+</body>
+</html>

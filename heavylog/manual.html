@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeavyLog — User Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #FAFAF8;
+      --surface: #FFFFFF;
+      --text: #1A1A1A;
+      --text-secondary: #5A5A58;
+      --accent: #2C5F2D;
+      --accent-light: #E8F0E8;
+      --accent-dark: #1E4220;
+      --warn: #B33A2B;
+      --warn-bg: #FEF2F0;
+      --warn-border: #E8C4BF;
+      --border: #E4E2DD;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--accent-dark);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(44,95,45,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(30,66,32,0.4) 0%, transparent 50%);
+    }
+    .header-content { position: relative; z-index: 1; }
+    .header .app-name {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.15rem;
+    }
+    .header .app-tagline {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      opacity: 0.95;
+    }
+    .header .version {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    /* ── Main ── */
+    .container {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-left: 4px solid var(--warn);
+      border-radius: 8px;
+      padding: 1.4rem 1.5rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .disclaimer-title {
+      font-weight: 700;
+      color: var(--warn);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .disclaimer p {
+      font-size: 0.92rem;
+      color: #4A2A22;
+      line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+    .disclaimer p:last-child { margin-bottom: 0; }
+
+    /* ── Tip box ── */
+    .tip-box {
+      border-radius: 8px;
+      padding: 1rem 1.3rem;
+      margin: 1rem 0 1.2rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .tip-box.green {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+    }
+    .tip-box.red {
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn);
+    }
+    .tip-box .tip-label {
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .tip-box.green .tip-label { color: var(--accent-dark); }
+    .tip-box.red .tip-label { color: var(--warn); }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+      padding: 0;
+    }
+    .toc li {
+      counter-increment: toc;
+      margin-bottom: 0.3rem;
+    }
+    .toc li::before {
+      content: counter(toc) ".";
+      display: inline-block;
+      width: 1.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.15s;
+    }
+    .toc a:hover { color: var(--accent); }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 2.5rem; }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--accent-dark);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--accent-light);
+    }
+    .section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 1.3rem 0 0.5rem;
+    }
+    .section p {
+      margin-bottom: 0.8rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .section ul, .section ol {
+      padding-left: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .section li {
+      margin-bottom: 0.4rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .section li::marker {
+      color: var(--accent);
+    }
+    .section strong { color: var(--text); font-weight: 600; }
+
+    /* ── Screenshots ── */
+    .screenshot-wrap {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .screenshot-wrap img {
+      max-width: 260px;
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .screenshot-wrap .caption {
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* ── Tables ── */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.2rem;
+      font-size: 0.9rem;
+    }
+    .info-table th {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    .info-table td {
+      padding: 0.55rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .info-table tr:nth-child(even) td {
+      background: #F8F8F6;
+    }
+    .info-table td:first-child {
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      display: inline-block;
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 0.5rem;
+      opacity: 0.7;
+    }
+    .back-to-top:hover { opacity: 1; }
+
+    @media (max-width: 600px) {
+      .header { padding: 2rem 1.2rem 1.8rem; }
+      .header .app-name { font-size: 2rem; }
+      .header h1 { font-size: 1.3rem; }
+      .container { padding: 1.5rem 1.2rem 3rem; }
+      .section h2 { font-size: 1.3rem; }
+      .screenshot-wrap img { max-width: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header" id="top">
+    <div class="header-content">
+      <div class="app-name">HeavyLog</div>
+      <div class="app-tagline">Driver Work Logbook</div>
+      <h1>User Manual</h1>
+      <p class="version">Version 1.0 &mdash; March 2026</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <div class="disclaimer-title">&#9888; Not an Official or Approved Logbook</div>
+      <p>HeavyLog is a personal reference tool only. It is <strong>not</strong> approved, endorsed or recognised by the National Heavy Vehicle Regulator (NHVR), the Australian Government, any State or Territory transport authority, or any other government agency.</p>
+      <p>HeavyLog does not replace your legal obligation to maintain a compliant work diary or logbook as required under the Heavy Vehicle National Law (HVNL) and NHVR regulations.</p>
+    </div>
+
+    <!-- TOC -->
+    <nav class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#dashboard">The Dashboard</a></li>
+        <li><a href="#logging">Logging Activities</a></li>
+        <li><a href="#rules">Fatigue Rules Reference</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="#export">Exporting &amp; Importing Data</a></li>
+        <li><a href="#tips">Tips &amp; Best Practices</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#privacy">Data &amp; Privacy</a></li>
+        <li><a href="#legal">Legal Notices</a></li>
+        <li><a href="#contact">Support &amp; Contact</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Introduction -->
+    <section class="section" id="intro">
+      <h2>1. Introduction</h2>
+      <p>HeavyLog is a personal fatigue management reference tool designed for Australian heavy vehicle drivers. It helps you informally track your work and rest activities against NHVR fatigue guidelines, including both <strong>Standard Hours</strong> and <strong>Basic Fatigue Management (BFM)</strong> schemes.</p>
+      <p>The app records exact timestamps for all activities, calculates your remaining work and rest obligations in real time, and provides clear visual alerts when you are approaching or exceeding fatigue limits.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Important</div>
+        HeavyLog is NOT an official or NHVR-approved electronic work diary. It is a personal reference tool only. You must still maintain a compliant work diary as required under the HVNL.
+      </div>
+
+      <h3>Key Features</h3>
+      <ul>
+        <li>Real-time fatigue dashboard with colour-coded status cards</li>
+        <li>Support for both Standard Hours and BFM fatigue schemes</li>
+        <li>Exact timestamp recording for all work and rest activities</li>
+        <li>Automatic calculation of remaining work time across multiple rolling windows</li>
+        <li>Break and rest countdowns with clear visual warnings</li>
+        <li>GPS location capture for log entries (tap to use)</li>
+        <li>CSV export and import of your complete activity log</li>
+        <li>Fully offline &mdash; no internet connection, account or login required</li>
+        <li>All data stored locally on your device only</li>
+      </ul>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 2. Getting Started -->
+    <section class="section" id="getting-started">
+      <h2>2. Getting Started</h2>
+
+      <h3>2.1 Installing HeavyLog</h3>
+      <ol>
+        <li>Open the <strong>Google Play Store</strong> on your Android device.</li>
+        <li>Search for <strong>HeavyLog</strong>.</li>
+        <li>Tap <strong>Install</strong> and wait for the download to complete.</li>
+        <li>Open the app. No account or registration is needed.</li>
+      </ol>
+
+      <h3>2.2 Getting Started Walkthrough</h3>
+      <p>When you first open HeavyLog, a <strong>4-step walkthrough</strong> guides you through the key concepts: what HeavyLog does, how the compliance bars work, the most important fatigue rules, and how to get started.</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/07_walkthrough.png" alt="Getting Started walkthrough - Step 1 of 4">
+        <div class="caption">Figure 1 &mdash; Getting Started walkthrough (Step 1 of 4)</div>
+      </div>
+
+      <div class="tip-box green">
+        <div class="tip-label">Tip</div>
+        You can replay the walkthrough at any time from the <strong>Profile</strong> tab by tapping <strong>VIEW GETTING STARTED GUIDE</strong>.
+      </div>
+
+      <h3>2.3 Setting Up Your Profile</h3>
+      <p>Before you start logging activities, set up your driver profile in the <strong>Profile</strong> tab:</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/05_profile_top.png" alt="Profile tab with driver details, settings and action buttons">
+        <div class="caption">Figure 2 &mdash; Profile tab showing driver details, compliance settings and action buttons</div>
+      </div>
+
+      <table class="info-table">
+        <tr><th>Field</th><th>Description</th></tr>
+        <tr><td>Full Name</td><td>Your full name as it appears on your licence</td></tr>
+        <tr><td>Licence Number</td><td>Your heavy vehicle licence number</td></tr>
+        <tr><td>Vehicle Registration</td><td>Registration number of your primary vehicle</td></tr>
+        <tr><td>Employer / Company</td><td>The company you drive for (or your business name)</td></tr>
+        <tr><td>Hours Scheme</td><td>Choose Standard Hours or BFM</td></tr>
+        <tr><td>Home Base Timezone</td><td>Your home base timezone for fatigue calculations</td></tr>
+        <tr><td>Warning Threshold</td><td>Percentage at which amber warnings appear (default 80%)</td></tr>
+        <tr><td>14-Day Rest Enforcement</td><td><strong>Grace mode</strong> (default) suppresses the 14-day rest breach until 72h of work is logged, to avoid false alarms on a fresh install. <strong>Strict mode</strong> enforces from the first entry for full NHVR compliance.</td></tr>
+      </table>
+
+      <div class="tip-box green">
+        <div class="tip-label">Tip</div>
+        Set your fatigue scheme and home base timezone first, as these affect how your dashboard calculations work.
+      </div>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 3. Dashboard -->
+    <section class="section" id="dashboard">
+      <h2>3. The Dashboard</h2>
+      <p>The Dashboard is your main screen. It shows your current fatigue status at a glance with colour-coded cards that update in real time.</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/01_dashboard.png" alt="Dashboard showing fatigue meter, alert banner and compliance bars">
+        <div class="caption">Figure 3 &mdash; Dashboard with fatigue meter, alert banner, today&rsquo;s log and compliance bars</div>
+      </div>
+
+      <h3>3.1 Fatigue Meter</h3>
+      <p>The circular gauge at the top shows your overall fatigue usage as a percentage. It changes colour as you approach limits: <strong style="color:#2ECC71">green</strong> when safe, <strong style="color:#F1C40F">amber</strong> when approaching, and <strong style="color:#E74C3C">red</strong> when exceeded.</p>
+      <p>Next to the gauge, key statistics show your work time in the short window, 24-hour window, 7-day window, and when your next break is due.</p>
+
+      <h3>3.2 Alert Banner</h3>
+      <p>Below the fatigue meter, an alert banner shows your overall compliance status:</p>
+      <ul>
+        <li><strong>COMPLIANT</strong> (green) &mdash; All fatigue limits within safe range</li>
+        <li><strong>APPROACHING LIMITS</strong> (yellow) &mdash; One or more windows approaching a limit. Plan your rest soon.</li>
+        <li><strong>FATIGUE BREACH</strong> (red) &mdash; A limit has been exceeded. Stop work and take required rest.</li>
+      </ul>
+
+      <h3>3.3 Today&rsquo;s Log Summary</h3>
+      <p>Three summary cards show your total Driving, Other Work, and Rest hours for the current day.</p>
+
+      <h3>3.4 Compliance Bars</h3>
+      <p>Horizontal progress bars show your usage percentage across each fatigue window (5&frac12;h, 24h, 7-day, 14-day). Bars change from green to yellow to red as you approach limits.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 4. Logging Activities -->
+    <section class="section" id="logging">
+      <h2>4. Logging Activities</h2>
+
+      <h3>4.1 Activity Types</h3>
+      <table class="info-table">
+        <tr><th>Activity</th><th>Description</th><th>Counts As</th></tr>
+        <tr><td>Driving</td><td>Time spent driving the heavy vehicle</td><td>Work</td></tr>
+        <tr><td>Other Work</td><td>Non-driving tasks (loading, paperwork, checks)</td><td>Work</td></tr>
+        <tr><td>Short Break</td><td>Short rest breaks during a shift (15&ndash;30 min)</td><td>Rest</td></tr>
+        <tr><td>Major Rest</td><td>Continuous rest period (night rest, 7h+)</td><td>Rest</td></tr>
+      </table>
+
+      <h3>4.2 Selecting and Starting an Activity</h3>
+      <p>From the <strong>Log Entry</strong> tab, select the activity type you want to start, then tap the orange <strong>START ACTIVITY</strong> button.</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/02_log_entry.png" alt="Log Entry tab with activity buttons">
+        <div class="caption">Figure 4 &mdash; Log Entry tab with activity buttons and HEADS UP warning</div>
+      </div>
+
+      <h3>4.3 Setting the Start Time</h3>
+      <p>After tapping START ACTIVITY, a modal appears where you can set the exact start time. The app defaults to the current time, but you can adjust the hour, minute and date to log a past activity.</p>
+      <p>The modal also shows any approaching fatigue limits so you can make an informed decision before starting work.</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/06_start_modal.png" alt="Start time modal with limit warnings">
+        <div class="caption">Figure 5 &mdash; Start time modal with approaching limit warnings</div>
+      </div>
+
+      <h3>4.4 Stopping an Activity &amp; Entering Details</h3>
+      <p>When you finish an activity, tap <strong>STOP</strong>. You will be prompted to enter:</p>
+      <ul>
+        <li><strong>Location</strong> &mdash; Tap &#x1F4CD; to auto-fill GPS, or type manually</li>
+        <li><strong>Vehicle Rego / Fleet No.</strong> &mdash; Pre-filled from your profile</li>
+        <li><strong>Odometer (km)</strong> &mdash; Current reading</li>
+        <li><strong>Trailer No.</strong> &mdash; Pre-filled from your profile</li>
+        <li><strong>Note</strong> &mdash; Any additional notes</li>
+      </ul>
+
+      <div class="screenshot-wrap">
+        <img src="images/02b_log_details.png" alt="Activity details fields">
+        <div class="caption">Figure 6 &mdash; Activity details: location, vehicle, odometer, trailer, notes</div>
+      </div>
+
+      <h3>4.5 GPS Location</h3>
+      <p>When you tap the locate button, HeavyLog requests your device&rsquo;s GPS and fills in the location field:</p>
+      <ul>
+        <li>Location is only accessed when you explicitly tap the button &mdash; never in the background</li>
+        <li>GPS coordinates are stored as text in your log entry only</li>
+        <li>No location data is ever transmitted to any server</li>
+        <li>You can deny the permission and type locations manually</li>
+      </ul>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 5. Fatigue Rules -->
+    <section class="section" id="rules">
+      <h2>5. Fatigue Rules Reference</h2>
+      <p>The <strong>Rules</strong> tab provides a built-in reference for NHVR fatigue rules. Switch between Standard Hours and BFM using the tabs at the top.</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/03_rules_std.png" alt="Rules tab showing Standard Hours">
+        <div class="caption">Figure 7 &mdash; Rules tab showing Standard Hours fatigue windows</div>
+      </div>
+
+      <h3>5.1 Standard Hours</h3>
+      <table class="info-table">
+        <tr><th>Rule</th><th>Limit</th><th>Required Rest</th></tr>
+        <tr><td>5&frac12;h window</td><td>5h 15m work</td><td>15 min continuous rest</td></tr>
+        <tr><td>8h window</td><td>7h 30m work</td><td>30 min rest (in 15-min blocks)</td></tr>
+        <tr><td>11h window</td><td>10h work</td><td>60 min rest (in 15-min blocks)</td></tr>
+        <tr><td>24h window</td><td>12h work</td><td>Remaining time as rest</td></tr>
+        <tr><td>7-day rest</td><td>Unconditional</td><td>24h continuous rest every 7 days</td></tr>
+      </table>
+
+      <h3>5.2 Basic Fatigue Management (BFM)</h3>
+      <table class="info-table">
+        <tr><th>Rule</th><th>Limit</th><th>Required Rest</th></tr>
+        <tr><td>6&frac14;h window</td><td>6h work</td><td>30 min continuous rest</td></tr>
+        <tr><td>9h window</td><td>8h work</td><td>Remaining time as rest</td></tr>
+        <tr><td>12h window</td><td>11h work</td><td>Remaining time as rest</td></tr>
+        <tr><td>24h window</td><td>14h work</td><td>Remaining time as rest</td></tr>
+        <tr><td>Major rest</td><td>7h continuous</td><td>Qualifies as major rest</td></tr>
+        <tr><td>84h cumulative</td><td>84h since last 24h rest</td><td>24h continuous rest required</td></tr>
+      </table>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Important</div>
+        These tables are a simplified reference. The actual NHVR rules contain additional detail, exemptions and conditions. HeavyLog calculates against these guidelines as a personal aid &mdash; it does not replace official regulatory guidance.
+      </div>
+
+      <h3>5.3 How HeavyLog Calculates</h3>
+      <p>HeavyLog uses <strong>exact timestamps</strong> (not 15-minute block rounding) for all calculations. The 15-minute rounding rule under NHVR only applies to handwritten work diaries &mdash; electronic systems record and calculate with precise times.</p>
+      <p>The app continuously scans rolling time windows to determine how much work and rest you have accumulated. When a window approaches its limit, the dashboard card changes colour and the alert banner updates.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 6. History -->
+    <section class="section" id="history">
+      <h2>6. History</h2>
+      <p>The <strong>History</strong> tab shows your complete log of recorded activities, grouped by date.</p>
+
+      <div class="screenshot-wrap">
+        <img src="images/04_history.png" alt="History tab with weekly summary and log entries">
+        <div class="caption">Figure 8 &mdash; History tab with weekly summary and log entries</div>
+      </div>
+
+      <h3>6.1 Weekly Summary</h3>
+      <p>At the top, three summary cards show your total Driving, Work and Rest hours for the current week, along with a progress bar for weekly work hours against the maximum.</p>
+
+      <h3>6.2 Browsing and Editing Entries</h3>
+      <p>Entries are listed in reverse chronological order. Each shows the activity icon, type, times, location, vehicle rego, trailer number and duration. Tap the pencil icon to edit an entry.</p>
+      <p>Changes to past entries will cause the dashboard to recalculate your fatigue status automatically.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 7. Export & Import -->
+    <section class="section" id="export">
+      <h2>7. Exporting &amp; Importing Data</h2>
+
+      <h3>7.1 Exporting Your Log (CSV)</h3>
+      <ol>
+        <li>Go to the <strong>Profile</strong> tab.</li>
+        <li>Tap <strong>EXPORT LOGBOOK</strong>.</li>
+        <li>The CSV file will be saved to your device. Share it via email, cloud storage or any other method.</li>
+      </ol>
+      <p>The exported CSV includes: activity type, start/end times, duration, location, odometer, vehicle rego, fleet number, trailer number, notes, and driver details.</p>
+
+      <h3>7.2 Importing a Log (CSV)</h3>
+      <ol>
+        <li>Go to the <strong>Profile</strong> tab.</li>
+        <li>Tap <strong>IMPORT LOGBOOK (CSV)</strong>.</li>
+        <li>Select the CSV file from your device.</li>
+        <li>HeavyLog will map the columns and import the entries into your log.</li>
+      </ol>
+
+      <div class="tip-box green">
+        <div class="tip-label">Tip</div>
+        Export your log regularly as a backup. If you uninstall the app or clear app data, all log entries are permanently deleted.
+      </div>
+
+      <h3>7.3 Clearing All Data</h3>
+      <p>The <strong>CLEAR ALL DATA</strong> button in the Profile tab permanently deletes all log entries, profile information and settings. This action cannot be undone.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Warning</div>
+        Always export your log before clearing data. Once cleared, your entries cannot be recovered.
+      </div>
+
+      <h3>7.4 Replaying the Getting Started Guide</h3>
+      <p>If you need a refresher on how HeavyLog works, tap the <strong>VIEW GETTING STARTED GUIDE</strong> button at the bottom of the Profile tab. This replays the 4-step walkthrough that appears on first launch.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 8. Tips -->
+    <section class="section" id="tips">
+      <h2>8. Tips &amp; Best Practices</h2>
+
+      <h3>8.1 Keep Your Log Accurate</h3>
+      <p>Log every activity as it happens. Starting and stopping activities promptly ensures your fatigue calculations are accurate.</p>
+
+      <h3>8.2 Export Regularly</h3>
+      <p>Make a habit of exporting your log at least weekly. The CSV serves as your backup and can be useful for cross-referencing with your official work diary.</p>
+
+      <h3>8.3 Monitor Dashboard Alerts</h3>
+      <p>Pay attention to amber/yellow warnings. They give advance notice so you can plan your next rest before hitting a red limit.</p>
+
+      <h3>8.4 Check Rest Countdowns</h3>
+      <p>When on a break or rest period, the dashboard shows exactly how much rest you still need before you can resume work.</p>
+
+      <h3>8.5 Keep Your Device Secure</h3>
+      <p>All data is stored on your device, so security depends on your device. Use a screen lock, keep your OS updated, and don&rsquo;t share your device with untrusted persons.</p>
+
+      <h3>8.6 Remember Your Legal Obligations</h3>
+      <p>HeavyLog is a personal reference tool. It does not replace your legal obligation to maintain an official NHVR-compliant work diary.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 9. Troubleshooting -->
+    <section class="section" id="troubleshooting">
+      <h2>9. Troubleshooting</h2>
+
+      <h3>9.1 Dashboard Shows Unexpected Alerts</h3>
+      <p>Check your recent entries in History. A missed stop, overlapping entry or incorrect time can affect calculations. Edit the incorrect entry and the dashboard will recalculate.</p>
+
+      <h3>9.2 GPS Location Not Working</h3>
+      <p>Ensure you&rsquo;ve granted location permission: <strong>Settings &gt; Apps &gt; HeavyLog &gt; Permissions</strong>. Also check your device&rsquo;s location services (GPS) are turned on.</p>
+
+      <h3>9.3 Data Lost After Reinstall</h3>
+      <p>Uninstalling removes all locally stored data. This is why regular CSV exports are essential. Use Import to restore from a previous export.</p>
+
+      <h3>9.4 CSV Import Errors</h3>
+      <p>Ensure the file matches HeavyLog&rsquo;s export format. Common issues: modified headers, wrong date formats, or extra columns added by spreadsheet software.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 10. Privacy -->
+    <section class="section" id="privacy">
+      <h2>10. Data &amp; Privacy</h2>
+      <ul>
+        <li>All data stored locally on your device only &mdash; nothing is uploaded</li>
+        <li>No account, login or registration required</li>
+        <li>No analytics, crash reports or advertising identifiers collected</li>
+        <li>GPS location only accessed when you tap the locate button</li>
+        <li>The app operates entirely offline</li>
+      </ul>
+      <p>For full details, see the <strong><a href="privacy.html" style="color:var(--accent)">HeavyLog Privacy Policy</a></strong>.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 11. Legal -->
+    <section class="section" id="legal">
+      <h2>11. Legal Notices</h2>
+      <p><strong>Disclaimer:</strong> HeavyLog is provided as a personal reference tool only, on an &ldquo;as is&rdquo; basis with no warranties of any kind. It is not approved, endorsed or recognised by the NHVR, the Australian Government, or any State or Territory transport authority.</p>
+      <p>We make no representation that HeavyLog is accurate, complete or current with NHVR regulations. We accept no responsibility for any compliance breach, fine, penalty or legal consequence arising from use of or reliance on this app.</p>
+      <p>Users are solely responsible for ensuring their own compliance with all applicable laws and regulations, including maintaining an official NHVR-compliant work diary.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 12. Support & Contact -->
+    <section class="section" id="contact">
+      <h2>12. Support &amp; Contact</h2>
+      <p>If you have any questions, found a bug, or want to suggest a feature, you can reach us at:</p>
+      <p><strong><a href="mailto:veedroot.investments@hotmail.com" style="color:var(--accent);">veedroot.investments@hotmail.com</a></strong></p>
+      <p>You can also leave feedback or report issues through the <strong>Google Play Store listing</strong> for HeavyLog.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+  <footer class="footer">
+    HeavyLog &mdash; Personal Driver Reference Tool &nbsp;|&nbsp; User Manual &nbsp;|&nbsp; March 2026
+    <br><a href="index.html" style="color:var(--accent);text-decoration:none;font-size:0.85rem;">&larr; Back to Home</a>
+  </footer>
+
+</body>
+</html>
