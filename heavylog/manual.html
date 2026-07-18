@@ -139,6 +139,42 @@
     .tip-box.green .tip-label { color: var(--accent-dark); }
     .tip-box.red .tip-label { color: var(--warn); }
 
+    /* ── Walkthrough steps ── */
+    .daysteps { counter-reset: dstep; list-style: none; padding-left: 0; margin: 1.2rem 0; }
+    .daysteps > li {
+      counter-increment: dstep;
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 1.1rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .daysteps > li::before {
+      content: counter(dstep);
+      position: absolute;
+      left: 0;
+      top: 0.1rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .daysteps .when {
+      display: block;
+      font-weight: 700;
+      color: var(--accent-dark);
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 0.1rem;
+    }
+
     /* ── TOC ── */
     .toc {
       background: var(--surface);
@@ -235,6 +271,7 @@
     }
 
     /* ── Tables ── */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .info-table {
       width: 100%;
       border-collapse: collapse;
@@ -260,6 +297,12 @@
       font-weight: 600;
       color: var(--text);
       white-space: nowrap;
+    }
+    .table-note {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin: -0.4rem 0 1.4rem;
+      line-height: 1.6;
     }
 
     /* ── Footer ── */
@@ -290,6 +333,7 @@
       .container { padding: 1.5rem 1.2rem 3rem; }
       .section h2 { font-size: 1.3rem; }
       .screenshot-wrap img { max-width: 220px; }
+      .daysteps > li { padding-left: 2.6rem; }
     }
   </style>
 </head>
@@ -300,7 +344,7 @@
       <div class="app-name">HeavyLog</div>
       <div class="app-tagline">Driver Work Logbook</div>
       <h1>User Manual</h1>
-      <p class="version">Version 1.0 &mdash; March 2026</p>
+      <p class="version">Updated July 2026 &mdash; Android &amp; iOS</p>
     </div>
   </header>
 
@@ -321,9 +365,13 @@
         <li><a href="#getting-started">Getting Started</a></li>
         <li><a href="#dashboard">The Dashboard</a></li>
         <li><a href="#logging">Logging Activities</a></li>
+        <li><a href="#typical-day">A Typical Day, Start to Finish</a></li>
+        <li><a href="#notifications">Notifications &amp; Warnings</a></li>
         <li><a href="#rules">Fatigue Rules Reference</a></li>
-        <li><a href="#history">History</a></li>
-        <li><a href="#export">Exporting &amp; Importing Data</a></li>
+        <li><a href="#scheme-change">Changing Your Work Scheme</a></li>
+        <li><a href="#history">History &amp; Compliance Audit</a></li>
+        <li><a href="#fixing">Fixing Mistakes &amp; Missing Entries</a></li>
+        <li><a href="#export">Backup, Export &amp; Import</a></li>
         <li><a href="#tips">Tips &amp; Best Practices</a></li>
         <li><a href="#troubleshooting">Troubleshooting</a></li>
         <li><a href="#privacy">Data &amp; Privacy</a></li>
@@ -335,25 +383,27 @@
     <!-- 1. Introduction -->
     <section class="section" id="intro">
       <h2>1. Introduction</h2>
-      <p>HeavyLog is a personal fatigue management reference tool designed for Australian heavy vehicle drivers. It helps you informally track your work and rest activities against NHVR fatigue guidelines, including both <strong>Standard Hours</strong> and <strong>Basic Fatigue Management (BFM)</strong> schemes.</p>
+      <p>HeavyLog is a personal fatigue management reference tool designed for Australian heavy vehicle drivers. It helps you informally track your work and rest activities against NHVR fatigue guidelines across three schemes: <strong>Standard Hours</strong>, <strong>Basic Fatigue Management (BFM)</strong> and <strong>ACA-F (Alternative Compliance Accreditation &ndash; Fatigue, Table 1)</strong>.</p>
       <p>The app records exact timestamps for all activities, calculates your remaining work and rest obligations in real time, and provides clear visual alerts when you are approaching or exceeding fatigue limits.</p>
 
       <div class="tip-box red">
         <div class="tip-label">&#9888; Important</div>
-        HeavyLog is NOT an official or NHVR-approved electronic work diary. It is a personal reference tool only. You must still maintain a compliant work diary as required under the HVNL.
+        HeavyLog is NOT an official or NHVR-approved electronic work diary (EWD). It is a personal reference tool only. You must still maintain a compliant work diary as required under the HVNL.
       </div>
 
       <h3>Key Features</h3>
       <ul>
-        <li>Real-time fatigue dashboard with colour-coded status cards</li>
-        <li>Support for both Standard Hours and BFM fatigue schemes</li>
+        <li>Real-time fatigue dashboard with colour-coded compliance bars</li>
+        <li>Support for Standard Hours, BFM and ACA-F fatigue schemes</li>
         <li>Exact timestamp recording for all work and rest activities</li>
-        <li>Automatic calculation of remaining work time across multiple rolling windows</li>
-        <li>Break and rest countdowns with clear visual warnings</li>
-        <li>GPS location capture for log entries (tap to use)</li>
-        <li>CSV export and import of your complete activity log</li>
-        <li>Fully offline &mdash; no internet connection, account or login required</li>
-        <li>All data stored locally on your device only</li>
+        <li>Automatic calculation of remaining work time across all concurrent fatigue windows</li>
+        <li>Night Rest Calendar tracking your 14-day night rest requirement</li>
+        <li>Compliance audit that re-scans your recent history for missed breaches</li>
+        <li>Break and rest countdowns with configurable advance warnings and notifications</li>
+        <li>Guided work-scheme changes with HVNL s263 reset tracking</li>
+        <li>Optional GPS location capture for log entries (tap to use)</li>
+        <li>CSV export/import, plus full JSON backup and restore</li>
+        <li>All logbook data stored locally on your device</li>
       </ul>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
@@ -363,6 +413,7 @@
       <h2>2. Getting Started</h2>
 
       <h3>2.1 Installing HeavyLog</h3>
+      <p><strong>Android (free)</strong></p>
       <ol>
         <li>Open the <strong>Google Play Store</strong> on your Android device.</li>
         <li>Search for <strong>HeavyLog</strong>.</li>
@@ -370,20 +421,32 @@
         <li>Open the app. No account or registration is needed.</li>
       </ol>
 
-      <h3>2.2 Getting Started Walkthrough</h3>
-      <p>When you first open HeavyLog, a <strong>4-step walkthrough</strong> guides you through the key concepts: what HeavyLog does, how the compliance bars work, the most important fatigue rules, and how to get started.</p>
+      <p><strong>iPhone / iPad (subscription)</strong></p>
+      <ol>
+        <li>Open the <strong>App Store</strong> on your iPhone or iPad.</li>
+        <li>Search for <strong>HeavyLog</strong> and tap <strong>Get</strong>.</li>
+        <li>On first launch the subscription screen appears. Start the free trial or choose a plan.</li>
+        <li>Billing is handled by your existing Apple ID &mdash; HeavyLog never creates a separate account, username or password.</li>
+      </ol>
+
+      <h3>2.2 Subscription (iPhone / iPad only)</h3>
+      <p>HeavyLog is <strong>free on Android</strong>. On iOS it is a subscription: <strong>A$1.99 per month</strong> or <strong>A$14.99 per year</strong>, billed through your Apple ID. New subscribers get a free trial (approximately one month).</p>
+      <p>The price and trial length shown inside the app are always the authoritative ones, as Apple sets them per region. Trial eligibility is tied to your Apple ID, so deleting and reinstalling the app does not grant a new trial. Manage or cancel your subscription any time in <strong>Settings &rarr; [your name] &rarr; Subscriptions</strong>.</p>
+
+      <h3>2.3 Getting Started Walkthrough</h3>
+      <p>When you first open HeavyLog, a <strong>6-step walkthrough</strong> introduces the key concepts: welcome, the compliance bars, your key rules, the first thing to log, the homebase clock, and a final summary. You can skip it at any point.</p>
 
       <div class="screenshot-wrap">
-        <img src="images/07_walkthrough.png" alt="Getting Started walkthrough - Step 1 of 4">
-        <div class="caption">Figure 1 &mdash; Getting Started walkthrough (Step 1 of 4)</div>
+        <img src="images/07_walkthrough.png" alt="Getting Started walkthrough - Step 1 of 6">
+        <div class="caption">Figure 1 &mdash; Getting Started walkthrough (Step 1 of 6)</div>
       </div>
 
       <div class="tip-box green">
         <div class="tip-label">Tip</div>
-        You can replay the walkthrough at any time from the <strong>Profile</strong> tab by tapping <strong>VIEW GETTING STARTED GUIDE</strong>.
+        Replay the walkthrough any time from the <strong>Profile</strong> tab &rarr; <strong>&#10067; Help &amp; About</strong> &rarr; <strong>&#127916; Replay walkthrough</strong>. The same card also has <strong>&#128214; Help &amp; FAQ</strong>.
       </div>
 
-      <h3>2.3 Setting Up Your Profile</h3>
+      <h3>2.4 Setting Up Your Profile</h3>
       <p>Before you start logging activities, set up your driver profile in the <strong>Profile</strong> tab:</p>
 
       <div class="screenshot-wrap">
@@ -391,21 +454,28 @@
         <div class="caption">Figure 2 &mdash; Profile tab showing driver details, compliance settings and action buttons</div>
       </div>
 
+      <div class="table-scroll">
       <table class="info-table">
         <tr><th>Field</th><th>Description</th></tr>
         <tr><td>Full Name</td><td>Your full name as it appears on your licence</td></tr>
         <tr><td>Licence Number</td><td>Your heavy vehicle licence number</td></tr>
         <tr><td>Vehicle Registration</td><td>Registration number of your primary vehicle</td></tr>
         <tr><td>Employer / Company</td><td>The company you drive for (or your business name)</td></tr>
-        <tr><td>Hours Scheme</td><td>Choose Standard Hours or BFM</td></tr>
-        <tr><td>Home Base Timezone</td><td>Your home base timezone for fatigue calculations</td></tr>
-        <tr><td>Warning Threshold</td><td>Percentage at which amber warnings appear (default 80%)</td></tr>
-        <tr><td>14-Day Rest Enforcement</td><td><strong>Grace mode</strong> (default) suppresses the 14-day rest breach until 72h of work is logged, to avoid false alarms on a fresh install. <strong>Strict mode</strong> enforces from the first entry for full NHVR compliance.</td></tr>
+        <tr><td>Hours Scheme</td><td><strong>Required.</strong> Standard Hours &mdash; Solo, Basic Fatigue Management (BFM) &mdash; Solo, or Alternative Compliance Accreditation &ndash; Fatigue (ACA-F Table 1) &mdash; Solo. No scheme is preselected; you must choose one. Changing it later starts a guided swap &mdash; see section 8.</td></tr>
+        <tr><td>Home Base Timezone</td><td>Your home base timezone. <strong>All</strong> fatigue calculations &mdash; work, rest, night windows &mdash; use this zone, never the truck&rsquo;s local time.</td></tr>
+        <tr><td>Warning Threshold</td><td>Percentage of a limit at which amber warnings appear (default 80%)</td></tr>
+        <tr><td>Warning Lead Time</td><td>How far ahead of a break or limit you are warned: Off, 5, 15, 30 (default), 45 or 60 minutes. Breach alerts always fire and cannot be turned off.</td></tr>
       </table>
+      </div>
 
       <div class="tip-box green">
         <div class="tip-label">Tip</div>
-        Set your fatigue scheme and home base timezone first, as these affect how your dashboard calculations work.
+        Set your fatigue scheme and home base timezone <em>first</em> &mdash; both change how every calculation in the app works.
+      </div>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Your first 14 days</div>
+        On a fresh install HeavyLog has no history of the work you did before you installed it. To avoid false alarms it holds back 14-day rest and night-rest breach alerts until either you log a rest of <strong>24 hours or more</strong> (which gives it a real starting point), or <strong>14 days</strong> have passed since install &mdash; whichever comes first. During this period the app is <strong>not</strong> fully verifying your 14-day obligations. Check them against your work diary.
       </div>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
@@ -413,30 +483,56 @@
     <!-- 3. Dashboard -->
     <section class="section" id="dashboard">
       <h2>3. The Dashboard</h2>
-      <p>The Dashboard is your main screen. It shows your current fatigue status at a glance with colour-coded cards that update in real time.</p>
+      <p>The Dashboard is your main screen. It shows your current fatigue status at a glance and updates in real time.</p>
 
       <div class="screenshot-wrap">
-        <img src="images/01_dashboard.png" alt="Dashboard showing fatigue meter, alert banner and compliance bars">
-        <div class="caption">Figure 3 &mdash; Dashboard with fatigue meter, alert banner, today&rsquo;s log and compliance bars</div>
+        <img src="images/01_dashboard.png" alt="Dashboard showing status card, alert banner and compliance bars">
+        <div class="caption">Figure 3 &mdash; Dashboard with status card, alert banner, today&rsquo;s log and compliance bars</div>
       </div>
 
-      <h3>3.1 Fatigue Meter</h3>
-      <p>The circular gauge at the top shows your overall fatigue usage as a percentage. It changes colour as you approach limits: <strong style="color:#2ECC71">green</strong> when safe, <strong style="color:#F1C40F">amber</strong> when approaching, and <strong style="color:#E74C3C">red</strong> when exceeded.</p>
-      <p>Next to the gauge, key statistics show your work time in the short window, 24-hour window, 7-day window, and when your next break is due.</p>
+      <h3>3.1 Status Card &amp; Homebase Clock</h3>
+      <p>The top of the Dashboard shows your current activity (Driving, Other Work, Break or Rest), how long you have been on it, and when it started. Alongside it a homebase clock counts down to your next required break.</p>
+      <p>If you are working away from your home base timezone, a second clock shows your local time as well &mdash; but remember that every compliance calculation still uses your <strong>homebase</strong> zone.</p>
 
       <h3>3.2 Alert Banner</h3>
-      <p>Below the fatigue meter, an alert banner shows your overall compliance status:</p>
+      <p>The alert banner changes with your situation:</p>
       <ul>
-        <li><strong>COMPLIANT</strong> (green) &mdash; All fatigue limits within safe range</li>
-        <li><strong>APPROACHING LIMITS</strong> (yellow) &mdash; One or more windows approaching a limit. Plan your rest soon.</li>
-        <li><strong>FATIGUE BREACH</strong> (red) &mdash; A limit has been exceeded. Stop work and take required rest.</li>
+        <li><strong>COMPLIANT</strong> (green) &mdash; you are clear of all limits</li>
+        <li><strong>APPROACHING LIMITS</strong> (amber) &mdash; you are nearing a cap; plan your rest now</li>
+        <li><strong>FATIGUE BREACH / BREAK REQUIRED NOW / SHIFT LIMIT REACHED / WORK LIMIT REACHED</strong> (red) &mdash; act immediately</li>
       </ul>
+      <p>While you are resting, the banner instead shows your rest progress and when you may resume work.</p>
 
-      <h3>3.3 Today&rsquo;s Log Summary</h3>
-      <p>Three summary cards show your total Driving, Other Work, and Rest hours for the current day.</p>
+      <h3>3.3 Today&rsquo;s Log</h3>
+      <p>Three cards show your <strong>Driving</strong>, <strong>Other Work</strong> and <strong>Rest &amp; Breaks</strong> totals for the current day. Tap the &#9432; beside the heading to see how HeavyLog defines &ldquo;today&rdquo; (your homebase timezone day).</p>
 
       <h3>3.4 Compliance Bars</h3>
-      <p>Horizontal progress bars show your usage percentage across each fatigue window (5&frac12;h, 24h, 7-day, 14-day). Bars change from green to yellow to red as you approach limits.</p>
+      <p>Horizontal bars show how much of each fatigue window you have used, turning amber then red as you approach a limit. Tap any bar for a detailed breakdown; tap the &#9881; to change which bars are shown.</p>
+      <p>The short shift window differs by scheme:</p>
+      <ul>
+        <li><strong>Standard Hours</strong> &mdash; 5&frac12;h window (max 5h 15m work, then a 15-minute break)</li>
+        <li><strong>BFM and ACA-F</strong> &mdash; 6&frac14;h window (max 6h work, then a 15-minute break)</li>
+      </ul>
+
+      <h3>3.5 Long/Night Work Bar (BFM &amp; ACA-F only)</h3>
+      <p>A dedicated &#127769; bar tracks your <strong>long/night work</strong> against the 36-hour limit in any 7 days. See section 7.5 for what counts.</p>
+
+      <h3>3.6 Reading the Planner</h3>
+      <p>HeavyLog projects two forward-looking times. They are the most useful numbers on the screen, and the most commonly misread:</p>
+      <div class="table-scroll">
+      <table class="info-table">
+        <tr><th>Term</th><th>What it means</th></tr>
+        <tr><td>Next break</td><td>When your next <em>rest break</em> falls due &mdash; driven by whichever short window (5&frac12;h / 6&frac14;h, 8h/9h, 11h/12h) runs out first.</td></tr>
+        <tr><td>Can work until</td><td>The end of your legal shift &mdash; the point at which your 24-hour work cap (12h Standard, 14h BFM/ACA-F) is exhausted and you must take a major rest.</td></tr>
+        <tr><td>Must stop by</td><td>The earliest of all binding constraints. This is the time to plan around.</td></tr>
+      </table>
+      </div>
+      <p>Both are <strong>projections</strong>, calculated on the assumption that you keep working continuously from now. They move as you log activity &mdash; taking a break earlier than required pushes them out; working through a break pulls them in.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; The planner does not include the 36-hour limit</div>
+        Under BFM and ACA-F, the planner&rsquo;s &ldquo;can work until&rdquo; and &ldquo;must stop by&rdquo; times do <strong>not</strong> account for the 36-hour long/night limit &mdash; the app states this on screen. Always check the &#127769; Long/Night bar as well; it can require you to stop earlier than the planner suggests.
+      </div>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
@@ -445,13 +541,16 @@
       <h2>4. Logging Activities</h2>
 
       <h3>4.1 Activity Types</h3>
+      <div class="table-scroll">
       <table class="info-table">
         <tr><th>Activity</th><th>Description</th><th>Counts As</th></tr>
         <tr><td>Driving</td><td>Time spent driving the heavy vehicle</td><td>Work</td></tr>
         <tr><td>Other Work</td><td>Non-driving tasks (loading, paperwork, checks)</td><td>Work</td></tr>
-        <tr><td>Short Break</td><td>Short rest breaks during a shift (15&ndash;30 min)</td><td>Rest</td></tr>
-        <tr><td>Major Rest</td><td>Continuous rest period (night rest, 7h+)</td><td>Rest</td></tr>
+        <tr><td>Short Break</td><td>A rest break taken during a shift</td><td>Rest</td></tr>
+        <tr><td>Major Rest</td><td>A long continuous rest, such as a night rest or a 24-hour reset</td><td>Rest</td></tr>
       </table>
+      </div>
+      <p class="table-note">Work time = driving plus all other vehicle-related work. Rest and breaks do not count as work.</p>
 
       <h3>4.2 Selecting and Starting an Activity</h3>
       <p>From the <strong>Log Entry</strong> tab, select the activity type you want to start, then tap the orange <strong>START ACTIVITY</strong> button.</p>
@@ -473,7 +572,7 @@
       <h3>4.4 Stopping an Activity &amp; Entering Details</h3>
       <p>When you finish an activity, tap <strong>STOP</strong>. You will be prompted to enter:</p>
       <ul>
-        <li><strong>Location</strong> &mdash; Tap &#x1F4CD; to auto-fill GPS, or type manually</li>
+        <li><strong>Location</strong> &mdash; Tap &#x1F4CD; to look up your location, or type it manually</li>
         <li><strong>Vehicle Rego / Fleet No.</strong> &mdash; Pre-filled from your profile</li>
         <li><strong>Odometer (km)</strong> &mdash; Current reading</li>
         <li><strong>Trailer No.</strong> &mdash; Pre-filled from your profile</li>
@@ -485,198 +584,441 @@
         <div class="caption">Figure 6 &mdash; Activity details: location, vehicle, odometer, trailer, notes</div>
       </div>
 
-      <h3>4.5 GPS Location</h3>
-      <p>When you tap the locate button, HeavyLog requests your device&rsquo;s GPS and fills in the location field:</p>
+      <h3>4.5 Location Lookup</h3>
+      <p>When you tap the &#x1F4CD; button, HeavyLog reads your device&rsquo;s GPS and then looks up a readable street address:</p>
       <ul>
-        <li>Location is only accessed when you explicitly tap the button &mdash; never in the background</li>
-        <li>GPS coordinates are stored as text in your log entry only</li>
-        <li>No location data is ever transmitted to any server</li>
-        <li>You can deny the permission and type locations manually</li>
+        <li>Your location is only accessed when you explicitly tap the button &mdash; never in the background</li>
+        <li><strong>The address lookup uses the internet.</strong> Your GPS coordinates are sent to the OpenStreetMap Nominatim service to convert them into a street name. No other data is sent, and the result is stored only in your log entry on your device</li>
+        <li>If you prefer not to use this, simply type your location manually &mdash; the app never contacts the service unless you tap the button</li>
+        <li>If you are out of mobile coverage the lookup will fail; you can still type the location by hand</li>
       </ul>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 5. Fatigue Rules -->
+    <!-- 5. A Typical Day -->
+    <section class="section" id="typical-day">
+      <h2>5. A Typical Day, Start to Finish</h2>
+      <p>This walkthrough shows the rhythm of using HeavyLog across one shift. The times are an example under Standard Hours &mdash; your own limits depend on your scheme.</p>
+
+      <ol class="daysteps">
+        <li>
+          <span class="when">05:55 &mdash; Before you roll</span>
+          Open the <strong>Log Entry</strong> tab, tap <strong>Driving</strong>, then <strong>START ACTIVITY</strong>. In the start-time modal set <strong>06:00</strong> and confirm. Check the warning box in the modal &mdash; if you are already close to a limit, it tells you before you commit.
+        </li>
+        <li>
+          <span class="when">06:00 &mdash; Driving</span>
+          The Dashboard now shows your status card, a homebase clock counting down to your next break, and the compliance bars slowly filling. You do not need to touch the app again until something changes.
+        </li>
+        <li>
+          <span class="when">~10:45 &mdash; Advance warning</span>
+          A notification arrives: <em>&ldquo;&#9200; Break Required Soon &mdash; Take a 15-min break in 30 min.&rdquo;</em> Start looking for a safe place to stop. The Dashboard bar for the 5&frac12;h window has turned amber.
+        </li>
+        <li>
+          <span class="when">11:15 &mdash; Taking the break</span>
+          Pull up. Tap <strong>STOP</strong>, fill in location and odometer, and save. Then select <strong>Short Break</strong> and tap <strong>START ACTIVITY</strong>. The banner switches to rest mode and shows how much break time you still owe.
+        </li>
+        <li>
+          <span class="when">11:30 &mdash; Back to work</span>
+          Tap <strong>STOP</strong> to end the break, then select <strong>Driving</strong> and start again. Your short-window bar resets; the 24-hour and longer bars keep climbing &mdash; they are <em>not</em> reset by a short break.
+        </li>
+        <li>
+          <span class="when">14:00 &mdash; Loading at the depot</span>
+          Non-driving work still counts as work. Tap <strong>STOP</strong>, then log <strong>Other Work</strong> for the loading. Do not log it as a break &mdash; that would understate your work time and give you a false sense of headroom.
+        </li>
+        <li>
+          <span class="when">17:30 &mdash; Shift ending</span>
+          A notification warns that your shift limit is approaching. The planner&rsquo;s <em>can work until</em> time tells you when your 24-hour work cap runs out.
+        </li>
+        <li>
+          <span class="when">18:00 &mdash; Major rest</span>
+          Tap <strong>STOP</strong>, enter your final location and odometer, then select <strong>Major Rest</strong> and start it. Leave it running overnight &mdash; the app counts your continuous rest as it accrues.
+        </li>
+        <li>
+          <span class="when">Before bed &mdash; Confirm the day</span>
+          Go to <strong>History</strong>. The day heading shows a <em>pending</em> badge &mdash; tap it and complete the End-of-Day confirmation to declare the day&rsquo;s entries true and correct. Each entry then shows a &#10003;.
+        </li>
+        <li>
+          <span class="when">Next morning &mdash; Check your night rest</span>
+          If your rest ran 7+ continuous hours inside 10pm&ndash;8am homebase time, it counts as a <strong>night rest break</strong>. Open the <strong>Night Rest Calendar</strong> in History to confirm it was credited and see how many you still need.
+        </li>
+      </ol>
+
+      <div class="tip-box green">
+        <div class="tip-label">The habit that matters most</div>
+        Stop and start activities <em>as they happen</em>. Almost every problem drivers hit with HeavyLog &mdash; wrong totals, phantom breaches, gaps in history &mdash; comes from reconstructing a day afterwards from memory.
+      </div>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 6. Notifications -->
+    <section class="section" id="notifications">
+      <h2>6. Notifications &amp; Warnings</h2>
+      <p>HeavyLog can warn you before a limit arrives, so you are not relying on checking the screen.</p>
+
+      <h3>6.1 What Fires</h3>
+      <div class="table-scroll">
+      <table class="info-table">
+        <tr><th>Notification</th><th>When</th></tr>
+        <tr><td>&#9200; Break Required Soon</td><td>Your chosen lead time before a rest break falls due, naming the break length and the window forcing it</td></tr>
+        <tr><td>&#128680; Break Required Now</td><td>The moment the break is due</td></tr>
+        <tr><td>&#9200; Shift Ending Soon</td><td>Your lead time before your 24-hour work cap runs out and a major rest is required</td></tr>
+        <tr><td>&#128680; Fatigue Breach &mdash; Stop Now</td><td>A limit has been exceeded</td></tr>
+      </table>
+      </div>
+
+      <h3>6.2 Controlling Them</h3>
+      <ul>
+        <li>Set <strong>Warning Lead Time</strong> in the Profile tab: Off, 5, 15, 30 (default), 45 or 60 minutes.</li>
+        <li>Setting it to <strong>Off</strong> disables the advance warnings only. <strong>Breach alerts always fire and cannot be turned off.</strong></li>
+        <li>The same setting also controls when the on-screen bars turn amber.</li>
+      </ul>
+
+      <h3>6.3 Things to Know</h3>
+      <ul>
+        <li>Notifications only work in the installed phone app (Android or iOS), not in a web browser.</li>
+        <li>They are only scheduled while a <strong>work</strong> activity is running &mdash; nothing fires while you are on a break or a major rest.</li>
+        <li>They are recalculated every time you log something, so they always reflect your current position.</li>
+        <li>Allow notification permission when prompted, or you will not receive them. On Android also check that battery optimisation is not restricting HeavyLog.</li>
+      </ul>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Do not rely on notifications alone</div>
+        A notification can be missed, silenced, or delayed by your phone&rsquo;s power-saving settings. They are a convenience, not a compliance guarantee &mdash; the responsibility to stop on time remains yours.
+      </div>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 7. Fatigue Rules -->
     <section class="section" id="rules">
-      <h2>5. Fatigue Rules Reference</h2>
-      <p>The <strong>Rules</strong> tab provides a built-in reference for NHVR fatigue rules. Switch between Standard Hours and BFM using the tabs at the top.</p>
+      <h2>7. Fatigue Rules Reference</h2>
+      <p>The <strong>Rules</strong> tab provides a built-in reference for NHVR fatigue rules. Switch between <strong>Standard Hours</strong>, <strong>BFM</strong> and <strong>ACA-F</strong> using the three tabs at the top.</p>
 
       <div class="screenshot-wrap">
         <img src="images/03_rules_std.png" alt="Rules tab showing Standard Hours">
         <div class="caption">Figure 7 &mdash; Rules tab showing Standard Hours fatigue windows</div>
       </div>
 
-      <h3>5.1 Standard Hours</h3>
-      <table class="info-table">
-        <tr><th>Rule</th><th>Limit</th><th>Required Rest</th></tr>
-        <tr><td>5&frac12;h window</td><td>5h 15m work</td><td>15 min continuous rest</td></tr>
-        <tr><td>8h window</td><td>7h 30m work</td><td>30 min rest (in 15-min blocks)</td></tr>
-        <tr><td>11h window</td><td>10h work</td><td>60 min rest (in 15-min blocks)</td></tr>
-        <tr><td>24h window</td><td>12h work</td><td>Remaining time as rest</td></tr>
-        <tr><td>7-day rest</td><td>Unconditional</td><td>24h continuous rest every 7 days</td></tr>
-      </table>
+      <h3>7.1 How the Windows Are Counted</h3>
+      <p>This is the most misunderstood part of the HVNL, and it is worth reading before the tables below.</p>
+      <ul>
+        <li>Every window is counted <strong>forward from the end of a relevant major rest break</strong> &mdash; never backwards from &ldquo;now&rdquo;.</li>
+        <li>A later rest opens a <strong>new, additional</strong> window. It does <strong>not</strong> reset or zero a window that is already running.</li>
+        <li>Because of this, <strong>several windows run at the same time</strong>, and you must satisfy all of them concurrently.</li>
+        <li>A long rest &mdash; even 48 hours &mdash; does <strong>not</strong> wipe your 7-day or 14-day work totals. Hours worked before the rest keep counting.</li>
+      </ul>
 
-      <h3>5.2 Basic Fatigue Management (BFM)</h3>
+      <h3>7.2 Standard Hours &mdash; Solo</h3>
+      <div class="table-scroll">
       <table class="info-table">
-        <tr><th>Rule</th><th>Limit</th><th>Required Rest</th></tr>
-        <tr><td>6&frac14;h window</td><td>6h work</td><td>30 min continuous rest</td></tr>
-        <tr><td>9h window</td><td>8h work</td><td>Remaining time as rest</td></tr>
-        <tr><td>12h window</td><td>11h work</td><td>Remaining time as rest</td></tr>
-        <tr><td>24h window</td><td>14h work</td><td>Remaining time as rest</td></tr>
-        <tr><td>Major rest</td><td>7h continuous</td><td>Qualifies as major rest</td></tr>
-        <tr><td>84h cumulative</td><td>84h since last 24h rest</td><td>24h continuous rest required</td></tr>
+        <tr><th>In any period of</th><th>Max work</th><th>Min rest</th></tr>
+        <tr><td>5&frac12; hours</td><td>5h 15m</td><td>15 continuous minutes</td></tr>
+        <tr><td>8 hours</td><td>7h 30m</td><td>30 min in blocks of at least 15 min</td></tr>
+        <tr><td>11 hours</td><td>10h</td><td>60 min in blocks of at least 15 min</td></tr>
+        <tr><td>24 hours</td><td>12h</td><td><strong>7 continuous hours stationary rest</strong></td></tr>
+        <tr><td>7 days</td><td>72h</td><td>24 continuous hours stationary rest</td></tr>
+        <tr><td>14 days</td><td>144h</td><td>4 night rest breaks total, of which 2 must fall on consecutive nights</td></tr>
       </table>
+      </div>
+
+      <h3>7.3 Basic Fatigue Management (BFM) &mdash; Solo</h3>
+      <div class="table-scroll">
+      <table class="info-table">
+        <tr><th>In any period of</th><th>Max work</th><th>Min rest</th></tr>
+        <tr><td>6&frac14; hours</td><td>6h</td><td>15 continuous minutes</td></tr>
+        <tr><td>9 hours</td><td>8h 30m</td><td>30 min in blocks of at least 15 min</td></tr>
+        <tr><td>12 hours</td><td>11h</td><td>60 min in blocks of at least 15 min</td></tr>
+        <tr><td>24 hours</td><td>14h</td><td><strong>7 continuous hours stationary rest</strong></td></tr>
+        <tr><td>7 days</td><td>36h of long/night work (no cap on total work)</td><td>No rest entry required</td></tr>
+        <tr><td>14 days</td><td>144h</td><td>(a) 24 continuous hours stationary rest, taken before you accumulate 84h of work; <strong>and</strong> (b) a second, separate 24 continuous hours stationary rest; <strong>and</strong> (c) 4 night rest breaks total, of which 2 must fall on consecutive nights</td></tr>
+      </table>
+      </div>
+
+      <h3>7.4 ACA-F (Table 1) &mdash; Solo</h3>
+      <p>ACA-F requires ACA-F accreditation. Its daily limits are identical to BFM; the differences are all in the 14-day rest rules.</p>
+      <div class="table-scroll">
+      <table class="info-table">
+        <tr><th>In any period of</th><th>Max work</th><th>Min rest</th></tr>
+        <tr><td>6&frac14; hours</td><td>6h</td><td>15 continuous minutes</td></tr>
+        <tr><td>9 hours</td><td>8h 30m</td><td>30 min in blocks of at least 15 min</td></tr>
+        <tr><td>12 hours</td><td>11h</td><td>60 min in blocks of at least 15 min</td></tr>
+        <tr><td>24 hours</td><td>14h</td><td><strong>7 continuous hours stationary rest</strong></td></tr>
+        <tr><td>7 days</td><td>36h of long/night work (no cap on total work)</td><td>No rest entry required</td></tr>
+        <tr><td>14 days</td><td>144h</td><td>(a) <strong>Rest A</strong> &mdash; 24 continuous hours stationary rest, taken before you accumulate 84h of work; <strong>and</strong> (b) <strong>Rest B</strong> &mdash; a separate <strong>30</strong> continuous hours stationary rest that must cover midnight to 6am; <strong>and</strong> (c) <strong>2</strong> accredited night rest breaks</td></tr>
+      </table>
+      </div>
+      <p class="table-note"><strong>Two ACA-F differences to watch:</strong> the second reset is <strong>30 hours</strong>, not 24, and it must bracket midnight&ndash;6am. And unlike Standard/BFM, your 24-hour and 30-hour resets do <strong>not</strong> count towards the 2 required night rests &mdash; you need two separate overnight rests on top of them. ACA-F has no consecutive-nights requirement.</p>
+
+      <h3>7.5 Key Definitions</h3>
+      <ul>
+        <li><strong>Night rest break</strong> &mdash; 7 continuous hours of stationary rest taken entirely between <strong>10pm and 8am</strong> in your homebase timezone. Under Standard Hours and BFM a full 24-hour stationary rest also counts as one night rest break. Under <strong>ACA-F it does not</strong> &mdash; only the 7-hour overnight form counts.</li>
+        <li><strong>Stationary rest</strong> &mdash; rest taken out of the vehicle, or in an approved sleeper berth of a <em>stationary</em> vehicle. Rest in a moving vehicle does not count.</li>
+        <li><strong>Continuous</strong> &mdash; any work activity interrupts a rest and restarts the count.</li>
+        <li><strong>Long/night work</strong> (BFM &amp; ACA-F) &mdash; any work between <strong>midnight and 6am</strong> homebase time, <em>or</em> any work hours beyond 12 hours in a 24-hour period. Where those overlap, the hours are counted once. The 36-hour limit is a rolling 7-day total and is <strong>not</strong> reset by taking a 24-hour rest.</li>
+      </ul>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; The 36-hour cap also lowers your daily limit</div>
+        Under BFM and ACA-F, once your long/night work reaches <strong>36 hours in 7 days</strong>, your maximum work in any 24-hour period drops from <strong>14 hours to 12 hours</strong> &mdash; because any work past 12 hours is itself &ldquo;long&rdquo; work and is no longer permitted. The limit lifts only as those hours age out of the rolling 7-day window.
+      </div>
 
       <div class="tip-box red">
         <div class="tip-label">&#9888; Important</div>
-        These tables are a simplified reference. The actual NHVR rules contain additional detail, exemptions and conditions. HeavyLog calculates against these guidelines as a personal aid &mdash; it does not replace official regulatory guidance.
+        These tables are a simplified reference. The actual NHVR rules contain additional detail, exemptions and conditions. HeavyLog also does <strong>not</strong> model split rest (HVNL s255) under any scheme &mdash; if you split a major rest break, HeavyLog will not credit it as a major rest. Verify against your official work diary.
       </div>
 
-      <h3>5.3 How HeavyLog Calculates</h3>
-      <p>HeavyLog uses <strong>exact timestamps</strong> (not 15-minute block rounding) for all calculations. The 15-minute rounding rule under NHVR only applies to handwritten work diaries &mdash; electronic systems record and calculate with precise times.</p>
-      <p>The app continuously scans rolling time windows to determine how much work and rest you have accumulated. When a window approaches its limit, the dashboard card changes colour and the alert banner updates.</p>
+      <h3>7.6 How HeavyLog Calculates</h3>
+      <p>HeavyLog uses <strong>exact timestamps</strong> for all calculations. A written work diary, by contrast, rounds each work block up to the next 15 minutes &mdash; so your paper figure will always be equal to or higher than HeavyLog&rsquo;s. Where the app shows a paper-equivalent figure, use the higher number when comparing against your diary.</p>
+      <p>The app continuously evaluates every concurrent window to determine how much work and rest you have accumulated. When a window approaches its limit, the relevant bar changes colour and the alert banner updates.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 6. History -->
+    <!-- 8. Changing Your Work Scheme -->
+    <section class="section" id="scheme-change">
+      <h2>8. Changing Your Work Scheme</h2>
+      <p>Under the HVNL you may only operate under <strong>one</strong> fatigue scheme at a time, and section 263 sets strict conditions on changing between them. HeavyLog guides you through this rather than simply switching the setting.</p>
+
+      <h3>8.1 The Two Legal Paths</h3>
+      <p>When you change your <strong>Hours Scheme</strong> in the Profile tab, a <strong>CHANGING WORK SCHEME</strong> confirmation appears showing the change (for example <em>Standard Hours &rarr; BFM</em>) and the two options the law allows:</p>
+      <ul>
+        <li><strong>&#9989; Be compliant</strong> with <em>all</em> work and rest requirements of the new scheme &mdash; the swap then takes effect immediately.</li>
+        <li><strong>&#8987; If you are not compliant</strong>, you must take <strong>48 continuous hours of rest</strong> before operating under the new scheme.</li>
+      </ul>
+      <p>Tap <strong>CONFIRM SWAP</strong> to proceed, or <strong>CANCEL</strong> to stay on your current scheme.</p>
+
+      <h3>8.2 When a 48-Hour Reset Is Needed</h3>
+      <p>If a reset is required, the swap becomes <strong>pending</strong>. A banner appears on the Dashboard with a progress bar tracking your 48 hours of continuous rest. When the rest completes, the new scheme takes effect.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; The reset must come after you start the swap</div>
+        HeavyLog only counts rest taken <strong>after</strong> you initiate the scheme change. A 48-hour rest you happened to take last week does <strong>not</strong> qualify &mdash; section 263 requires the reset rest to occur in connection with the change. Initiate the swap first, then take the rest.
+      </div>
+
+      <h3>8.3 Cancelling or Changing a Pending Swap</h3>
+      <ul>
+        <li>To cancel, simply re-select your <strong>current</strong> scheme in the dropdown. HeavyLog confirms with <em>&ldquo;Scheme swap cancelled&rdquo;</em>.</li>
+        <li>Only one swap can be pending at a time. Cancel the current one before starting another.</li>
+        <li>Selecting the scheme you are already swapping to just reminds you the swap is in progress.</li>
+      </ul>
+
+      <h3>8.4 What a Reset Does Not Do</h3>
+      <p>A 48-hour reset lets you begin operating under the new scheme &mdash; it does <strong>not</strong> erase your history. Windows longer than the reset itself keep running across the change, including the 144-hour 14-day work cap and your night rest pattern. Work done before the swap continues to count toward those.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Accreditation is your responsibility</div>
+        Operating under BFM or ACA-F also requires your operator to hold the relevant accreditation and for you to be inducted into their fatigue management system. HeavyLog cannot verify this. Selecting BFM or ACA-F in the app does not make you lawfully entitled to work those hours.
+      </div>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 9. History -->
     <section class="section" id="history">
-      <h2>6. History</h2>
-      <p>The <strong>History</strong> tab shows your complete log of recorded activities, grouped by date.</p>
+      <h2>9. History &amp; Compliance Audit</h2>
+      <p>The <strong>History</strong> tab is your full compliance record: a weekly summary, a night rest calendar, list and graph views of your entries, and a compliance audit.</p>
 
       <div class="screenshot-wrap">
         <img src="images/04_history.png" alt="History tab with weekly summary and log entries">
         <div class="caption">Figure 8 &mdash; History tab with weekly summary and log entries</div>
       </div>
 
-      <h3>6.1 Weekly Summary</h3>
-      <p>At the top, three summary cards show your total Driving, Work and Rest hours for the current week, along with a progress bar for weekly work hours against the maximum.</p>
+      <h3>9.1 Weekly Summary</h3>
+      <p>Three cards show your <strong>Driving</strong>, <strong>Other Work</strong> and <strong>Rest &amp; Breaks</strong> totals. The period is shown beside the heading &mdash; <strong>&ldquo;Last 7 days&rdquo;</strong> for a rolling seven-day total, or <em>&ldquo;Since &lt;date&gt;&rdquo;</em> when a 7-day window is anchored to a major rest. It is <strong>not</strong> a Monday-to-Sunday week.</p>
+      <p>Below the cards a progress bar tracks your work against the weekly limit. Under Standard Hours this is the 72-hour cap. Under BFM and ACA-F there is <strong>no</strong> 7-day total-work limit &mdash; only the 36-hour long/night cap &mdash; so use the &#127769; Long/Night bar on the Dashboard as your real 7-day constraint.</p>
 
-      <h3>6.2 Browsing and Editing Entries</h3>
-      <p>Entries are listed in reverse chronological order. Each shows the activity icon, type, times, location, vehicle rego, trailer number and duration. Tap the pencil icon to edit an entry.</p>
-      <p>Changes to past entries will cause the dashboard to recalculate your fatigue status automatically.</p>
+      <h3>9.2 Night Rest Calendar</h3>
+      <p>A collapsible calendar showing which nights you took a qualifying night rest. The header badge shows your progress (for example <strong>&ldquo;2 of 4&rdquo;</strong>), and the panel tells you how many more are needed and by when. Nights that qualify are marked; upcoming nights you still need are highlighted.</p>
+
+      <h3>9.3 List and Graph Views</h3>
+      <p>Tap <strong>LIST</strong> or <strong>GRAPH</strong> to change how history is displayed; your choice is remembered.</p>
+      <ul>
+        <li><strong>GRAPH</strong> shows a 28-day strip of status pills &mdash; green <strong>COMPLIANT</strong>, red <strong>BREACH</strong>, grey <strong>NO ENTRIES</strong>. Tap a day to see a 24-hour timeline of driving, other work, breaks and rest, with any breach marked on the work row.</li>
+        <li>Tap any bar on the timeline to open a detail sheet with that activity&rsquo;s start, end, duration and type.</li>
+        <li><strong>LIST</strong> shows your entries grouped by day, newest first, each with its activity icon, times, location, vehicle, trailer and duration. Tap the pencil icon to edit an entry.</li>
+      </ul>
+      <p>History shows the most recent 28 days; tap <strong>Show next 28 days</strong> at the bottom to load older records.</p>
+
+      <h3>9.4 Compliance Audit</h3>
+      <p>HeavyLog re-scans your recent history for breaches you may have passed through. If it finds any, a red banner appears at the top of History and an <strong>All Entries / &#9888;&#65039; Audit</strong> toggle becomes available. The Audit view lists each breach with the window that was exceeded, the exact time, and by how much.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; What the Audit does and does not check</div>
+        The Audit re-checks the last <strong>14 days</strong> for work-limit breaches and 24-hour rest breaches. It does <strong>not</strong> currently re-check the BFM/ACA-F 36-hour long/night limit or the 14-day night-rest requirement, and it does not look further back than 14 days &mdash; even though the graph strip displays 28. Treat it as a helpful cross-check, not a complete compliance audit.
+      </div>
+
+      <h3>9.5 Confirming Your Entries</h3>
+      <p>Each day heading shows a confirmation status &mdash; <em>pending</em>, <em>&#9888; partial</em>, or <em>&#10003; confirmed</em>. Tap a pending badge to open the End-of-Day confirmation and declare that day&rsquo;s entries true and correct. Confirmed entries are marked with a &#10003;.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 7. Export & Import -->
+    <!-- 10. Fixing Mistakes -->
+    <section class="section" id="fixing">
+      <h2>10. Fixing Mistakes &amp; Missing Entries</h2>
+      <p>Forgetting to log something is the most common real-world problem. Everything in HeavyLog can be corrected, and your fatigue status recalculates automatically afterwards.</p>
+
+      <h3>10.1 You Forgot to Start an Activity</h3>
+      <p>Start it as normal, but in the start-time modal <strong>set the correct past time</strong> &mdash; adjust the hour, minute and date. Do not just start it &ldquo;now&rdquo;, as that understates your work time and can hide a real breach.</p>
+
+      <h3>10.2 You Forgot to Stop an Activity</h3>
+      <p>Stop it, then go to <strong>History</strong>, tap the pencil icon on that entry and correct the end time. The entry&rsquo;s duration and every affected window will recalculate.</p>
+
+      <h3>10.3 Gaps and Overlaps</h3>
+      <p>HeavyLog checks your recent history for unrecorded time between entries and for entries that overlap each other. If it finds any, an amber <strong>HISTORY ISSUES</strong> banner appears at the top of History &mdash; tap it to jump to the first issue.</p>
+      <ul>
+        <li><strong>Gaps</strong> appear inline between entries. Add the missing activity to fill the gap, or extend an adjacent entry if that is what actually happened.</li>
+        <li><strong>Overlaps</strong> mean two entries claim the same minutes. Edit one of them so the times line up.</li>
+      </ul>
+      <p>Unrecorded time is not automatically treated as rest, so leaving gaps can make your rest look shorter than it was &mdash; or hide work you actually did.</p>
+
+      <h3>10.4 Editing a Confirmed Entry</h3>
+      <p>If you edit an entry you have already confirmed, HeavyLog shows an <strong>&ldquo;Edit confirmed entry?&rdquo;</strong> warning, reminding you that you declared it true and correct. Choose <strong>Cancel</strong> to leave it alone, or <strong>Edit anyway</strong> to proceed.</p>
+
+      <div class="tip-box red">
+        <div class="tip-label">&#9888; Corrections can change your compliance status</div>
+        Fixing an entry may clear a breach &mdash; or reveal one that was previously hidden. If a correction reveals a past breach, it may already have been recorded in your official work diary. Never edit an entry to make a breach disappear; record what actually happened.
+      </div>
+
+      <h3>10.5 Rebuilding a Whole Missing Day</h3>
+      <p>Add the entries oldest-first so each one follows on from the last, using the start-time modal to set the correct times. Work from your written diary, delivery dockets or fuel receipts rather than memory, and confirm the day once it is complete.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
+
+    <!-- 11. Backup, Export & Import -->
     <section class="section" id="export">
-      <h2>7. Exporting &amp; Importing Data</h2>
+      <h2>11. Backup, Export &amp; Import</h2>
 
-      <h3>7.1 Exporting Your Log (CSV)</h3>
+      <h3>11.1 Full Backup and Restore (JSON)</h3>
       <ol>
         <li>Go to the <strong>Profile</strong> tab.</li>
-        <li>Tap <strong>EXPORT LOGBOOK</strong>.</li>
-        <li>The CSV file will be saved to your device. Share it via email, cloud storage or any other method.</li>
+        <li>Tap <strong>&#9729;&#65039; BACK UP TO CLOUD</strong>. HeavyLog writes a complete snapshot of your logbook <em>and settings</em> to your device&rsquo;s Documents folder and opens a share menu (Drive, Dropbox, email, and so on).</li>
+        <li>To restore, tap <strong>&#128229; RESTORE FROM CLOUD</strong> and choose the backup file.</li>
       </ol>
-      <p>The exported CSV includes: activity type, start/end times, duration, location, odometer, vehicle rego, fleet number, trailer number, notes, and driver details.</p>
+      <p>This is the most complete backup, because it preserves your profile and settings as well as your entries.</p>
 
-      <h3>7.2 Importing a Log (CSV)</h3>
+      <h3>11.2 Exporting Your Log (CSV)</h3>
       <ol>
         <li>Go to the <strong>Profile</strong> tab.</li>
-        <li>Tap <strong>IMPORT LOGBOOK (CSV)</strong>.</li>
-        <li>Select the CSV file from your device.</li>
-        <li>HeavyLog will map the columns and import the entries into your log.</li>
+        <li>Tap <strong>&#128228; EXPORT LOGBOOK</strong>.</li>
+        <li>The CSV is saved to your device and can be shared by email, cloud storage or any other method.</li>
+      </ol>
+      <p>The exported CSV includes activity type, start/end times, duration, location, odometer, vehicle rego, fleet number, trailer number, notes and driver details. On iPhone/iPad, exported files are also browsable in the Files app under <strong>On My iPhone &rarr; HeavyLog</strong>.</p>
+
+      <h3>11.3 Importing a Log (CSV)</h3>
+      <ol>
+        <li>Go to the <strong>Profile</strong> tab.</li>
+        <li>Tap <strong>&#128229; IMPORT LOGBOOK (CSV)</strong>.</li>
+        <li>Select the CSV file and HeavyLog will map the columns and import the entries.</li>
       </ol>
 
       <div class="tip-box green">
         <div class="tip-label">Tip</div>
-        Export your log regularly as a backup. If you uninstall the app or clear app data, all log entries are permanently deleted.
+        Back up regularly. If you uninstall the app or clear its data, everything stored on the device is permanently deleted.
       </div>
 
-      <h3>7.3 Clearing All Data</h3>
-      <p>The <strong>CLEAR ALL DATA</strong> button in the Profile tab permanently deletes all log entries, profile information and settings. This action cannot be undone.</p>
+      <h3>11.4 Destructive Actions</h3>
+      <p>Under <strong>&#9888; Destructive Actions</strong> in the Profile tab:</p>
+      <ul>
+        <li><strong>&#128465;&#65039; CLEAR LOG ENTRIES</strong> &mdash; deletes all entries; your profile settings are kept.</li>
+        <li><strong>Delete entries before a date</strong> &mdash; pick a date and permanently remove everything before it.</li>
+      </ul>
 
       <div class="tip-box red">
         <div class="tip-label">&#9888; Warning</div>
-        Always export your log before clearing data. Once cleared, your entries cannot be recovered.
+        Always back up or export before deleting anything. Once cleared, entries cannot be recovered.
       </div>
-
-      <h3>7.4 Replaying the Getting Started Guide</h3>
-      <p>If you need a refresher on how HeavyLog works, tap the <strong>VIEW GETTING STARTED GUIDE</strong> button at the bottom of the Profile tab. This replays the 4-step walkthrough that appears on first launch.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 8. Tips -->
+    <!-- 12. Tips -->
     <section class="section" id="tips">
-      <h2>8. Tips &amp; Best Practices</h2>
+      <h2>12. Tips &amp; Best Practices</h2>
 
-      <h3>8.1 Keep Your Log Accurate</h3>
-      <p>Log every activity as it happens. Starting and stopping activities promptly ensures your fatigue calculations are accurate.</p>
+      <h3>12.1 Keep Your Log Accurate</h3>
+      <p>Log every activity as it happens. Starting and stopping promptly keeps your fatigue calculations accurate, and avoids gaps you have to reconstruct later.</p>
 
-      <h3>8.2 Export Regularly</h3>
-      <p>Make a habit of exporting your log at least weekly. The CSV serves as your backup and can be useful for cross-referencing with your official work diary.</p>
+      <h3>12.2 Back Up Regularly</h3>
+      <p>Make a habit of backing up at least weekly. Your backup is also useful for cross-referencing against your official work diary.</p>
 
-      <h3>8.3 Monitor Dashboard Alerts</h3>
-      <p>Pay attention to amber/yellow warnings. They give advance notice so you can plan your next rest before hitting a red limit.</p>
+      <h3>12.3 Watch the Amber Warnings</h3>
+      <p>Amber warnings give you advance notice so you can plan your next rest before hitting a red limit. Tune how early they appear with the <strong>Warning Lead Time</strong> setting.</p>
 
-      <h3>8.4 Check Rest Countdowns</h3>
-      <p>When on a break or rest period, the dashboard shows exactly how much rest you still need before you can resume work.</p>
+      <h3>12.4 Plan Your Night Rests</h3>
+      <p>Night rests are the requirement drivers most often miss, because they must fall in a specific window (10pm&ndash;8am) rather than simply being long enough. Check the Night Rest Calendar weekly, not on the last day.</p>
 
-      <h3>8.5 Keep Your Device Secure</h3>
+      <h3>12.5 Remember Everything Uses Homebase Time</h3>
+      <p>If you drive across state lines, your night rest and long/night work windows are still measured in your <strong>homebase</strong> timezone &mdash; not the local time where you are parked.</p>
+
+      <h3>12.6 Keep Your Device Secure</h3>
       <p>All data is stored on your device, so security depends on your device. Use a screen lock, keep your OS updated, and don&rsquo;t share your device with untrusted persons.</p>
 
-      <h3>8.6 Remember Your Legal Obligations</h3>
+      <h3>12.7 Remember Your Legal Obligations</h3>
       <p>HeavyLog is a personal reference tool. It does not replace your legal obligation to maintain an official NHVR-compliant work diary.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 9. Troubleshooting -->
+    <!-- 13. Troubleshooting -->
     <section class="section" id="troubleshooting">
-      <h2>9. Troubleshooting</h2>
+      <h2>13. Troubleshooting</h2>
 
-      <h3>9.1 Dashboard Shows Unexpected Alerts</h3>
-      <p>Check your recent entries in History. A missed stop, overlapping entry or incorrect time can affect calculations. Edit the incorrect entry and the dashboard will recalculate.</p>
+      <h3>13.1 Dashboard Shows Unexpected Alerts</h3>
+      <p>Check your recent entries in History. A missed stop, an overlapping entry or an incorrect time will affect calculations. Look for the amber HISTORY ISSUES banner and see section 10 for how to correct entries.</p>
 
-      <h3>9.2 GPS Location Not Working</h3>
-      <p>Ensure you&rsquo;ve granted location permission: <strong>Settings &gt; Apps &gt; HeavyLog &gt; Permissions</strong>. Also check your device&rsquo;s location services (GPS) are turned on.</p>
+      <h3>13.2 Location Not Working</h3>
+      <p><strong>Android:</strong> Settings &rarr; Apps &rarr; HeavyLog &rarr; Permissions &rarr; Location &rarr; allow.<br>
+      <strong>iPhone/iPad:</strong> Settings &rarr; HeavyLog &rarr; Location &rarr; set to &ldquo;While Using the App&rdquo;.</p>
+      <p>Also check your device&rsquo;s location services are on. If the coordinates are found but no address appears, the address lookup needs an internet connection &mdash; type the location manually when out of coverage.</p>
 
-      <h3>9.3 Data Lost After Reinstall</h3>
-      <p>Uninstalling removes all locally stored data. This is why regular CSV exports are essential. Use Import to restore from a previous export.</p>
+      <h3>13.3 Notifications Not Arriving</h3>
+      <p>Check that notification permission is granted, that <strong>Warning Lead Time</strong> is not set to Off, and that a work activity is actually running &mdash; nothing is scheduled during a break or rest. On Android, also check battery optimisation is not restricting HeavyLog.</p>
 
-      <h3>9.4 CSV Import Errors</h3>
-      <p>Ensure the file matches HeavyLog&rsquo;s export format. Common issues: modified headers, wrong date formats, or extra columns added by spreadsheet software.</p>
+      <h3>13.4 Data Lost After Reinstall</h3>
+      <p>Uninstalling removes all locally stored data. This is why regular backups matter. Use <strong>RESTORE FROM CLOUD</strong> or CSV Import to bring your records back.</p>
+
+      <h3>13.5 CSV Import Errors</h3>
+      <p>Ensure the file matches HeavyLog&rsquo;s export format. Common causes: modified headers, changed date formats, or extra columns added by spreadsheet software.</p>
+
+      <h3>13.6 Reporting a Problem</h3>
+      <p>Open <strong>Profile &rarr; &#10067; Help &amp; About &rarr; Build</strong> and quote the build string (for example <em>build-2026-07-15-&hellip;-758</em>) when contacting support. It tells us exactly which version you are running.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 10. Privacy -->
+    <!-- 14. Privacy -->
     <section class="section" id="privacy">
-      <h2>10. Data &amp; Privacy</h2>
+      <h2>14. Data &amp; Privacy</h2>
       <ul>
-        <li>All data stored locally on your device only &mdash; nothing is uploaded</li>
-        <li>No account, login or registration required</li>
-        <li>No analytics, crash reports or advertising identifiers collected</li>
-        <li>GPS location only accessed when you tap the locate button</li>
-        <li>The app operates entirely offline</li>
+        <li>All logbook data &mdash; your entries, profile and settings &mdash; is stored locally on your device and is never uploaded, unless you export or back it up yourself</li>
+        <li>No HeavyLog account, login or registration is created on any platform</li>
+        <li>No analytics, crash reports or advertising identifiers are collected</li>
+        <li>Your location is only accessed when you tap the &#x1F4CD; button &mdash; never in the background</li>
+        <li>HeavyLog works offline for all logging and fatigue tracking. Two features use the internet: the optional location lookup (your coordinates are sent to the OpenStreetMap Nominatim service to obtain a street name), and, on iOS only, subscription verification with Apple</li>
       </ul>
       <p>For full details, see the <strong><a href="privacy.html" style="color:var(--accent)">HeavyLog Privacy Policy</a></strong>.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 11. Legal -->
+    <!-- 15. Legal -->
     <section class="section" id="legal">
-      <h2>11. Legal Notices</h2>
+      <h2>15. Legal Notices</h2>
       <p><strong>Disclaimer:</strong> HeavyLog is provided as a personal reference tool only, on an &ldquo;as is&rdquo; basis with no warranties of any kind. It is not approved, endorsed or recognised by the NHVR, the Australian Government, or any State or Territory transport authority.</p>
       <p>We make no representation that HeavyLog is accurate, complete or current with NHVR regulations. We accept no responsibility for any compliance breach, fine, penalty or legal consequence arising from use of or reliance on this app.</p>
       <p>Users are solely responsible for ensuring their own compliance with all applicable laws and regulations, including maintaining an official NHVR-compliant work diary.</p>
       <a href="#top" class="back-to-top">&uarr; Back to top</a>
     </section>
 
-    <!-- 12. Support & Contact -->
-<section class="section" id="contact">
-  <h2>12. Support &amp; Contact</h2>
-  <p>If you have any questions, found a bug, or want to suggest a feature, you can reach us at:</p>
-  <p><strong>
-    <a href="mailto:help.heavylog@outlook.com" style="color:var(--accent);">
-      help.heavylog@outlook.com
-    </a>
-  </strong></p>
+    <!-- 16. Support & Contact -->
+    <section class="section" id="contact">
+      <h2>16. Support &amp; Contact</h2>
+      <p>If you have any questions, found a bug, or want to suggest a feature, you can reach us at:</p>
+      <p><strong>
+        <a href="mailto:help.heavylog@outlook.com" style="color:var(--accent);">help.heavylog@outlook.com</a>
+      </strong></p>
+      <p>You can also tap <strong>Profile &rarr; &#128231; Contact support</strong> in the app, which opens a pre-addressed email.</p>
+      <p>To leave a public review: Android users, use the HeavyLog listing on <strong>Google Play</strong>; iPhone/iPad users, use the <strong>App Store</strong> listing.</p>
+      <a href="#top" class="back-to-top">&uarr; Back to top</a>
+    </section>
 
-  <p>You can also leave feedback or report issues through the <strong>Google Play Store listing</strong> for HeavyLog.</p>
-  <a href="#top" class="back-to-top">&uarr; Back to top</a>
-</section>
-
+  </main>
 
   <footer class="footer">
-    HeavyLog &mdash; Personal Driver Reference Tool &nbsp;|&nbsp; User Manual &nbsp;|&nbsp; March 2026
+    HeavyLog &mdash; Personal Driver Reference Tool &nbsp;|&nbsp; User Manual &nbsp;|&nbsp; July 2026
     <br><a href="index.html" style="color:var(--accent);text-decoration:none;font-size:0.85rem;">&larr; Back to Home</a>
   </footer>
 
