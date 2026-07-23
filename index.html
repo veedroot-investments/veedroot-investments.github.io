@@ -20,7 +20,7 @@
       --line:    rgba(21, 23, 30, 0.12);
       --line-soft: rgba(21, 23, 30, 0.07);
       --hl:      #FF6B00;   /* HeavyLog */
-      --eq:      #0BA36B;   /* Equifolio */
+      --eq:      #2F6EEF;   /* Equifolio — matches the wordmark blue used site/app-wide */
       --maxw:    980px;
     }
 
@@ -35,7 +35,7 @@
       text-rendering: optimizeLegibility;
     }
 
-    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem); }
 
     .mono {
       font-family: 'IBM Plex Mono', monospace;
@@ -298,7 +298,7 @@
       </h1>
       <p class="lede anim" style="animation-delay:0.16s">
         Veedroot Investments builds and publishes practical mobile software in-house.
-        Two apps are live on Google Play & iOS today.
+        Two apps are live on iOS & Google Play today.
       </p>
 
       <!-- Register strip (signature) -->
@@ -317,7 +317,7 @@
         </div>
         <div class="reg-cell">
           <span class="reg-k">Published</span>
-          <span class="reg-v">2 apps<br>Google Play</span>
+          <span class="reg-v">2 apps<br>iOS & Android</span>
         </div>
       </div>
     </section>
@@ -343,6 +343,7 @@
               Tracks work and rest against NHVR Standard Hours and BFM guidelines — fully offline, data stays on the device.
             </p>
             <div class="prod-links">
+              <a class="primary" href="https://apps.apple.com/app/heavylog/id6790227240">App Store</a>
               <a class="primary" href="https://play.google.com/store/apps/details?id=com.heavylog.app">Google Play</a>
               <a href="heavylog/">Overview</a>
               <a href="heavylog/manual.html">Manual</a>
@@ -358,10 +359,11 @@
             </div>
             <h3 class="prod-name">Equifolio</h3>
             <p class="prod-desc">
-              A portfolio tracker for shares and crypto. Follow holdings across Australian and US
-              markets and digital assets in one clean view, on a long-term horizon.
+              Track every investment — shares, crypto, property, pensions, bullion and cash —
+              with live prices and returns that actually add up. Private by design.
             </p>
             <div class="prod-links">
+              <a class="primary" href="https://apps.apple.com/au/app/equifolio/id6789482876">App Store</a>
               <a class="primary" href="https://play.google.com/store/apps/details?id=com.veedroot.equifolio">Google Play</a>
               <a href="equifolio/">Overview</a>
               <a href="equifolio/privacy.html">Privacy</a>
